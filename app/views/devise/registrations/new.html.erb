@@ -1,0 +1,14 @@
+<div class="hero-unit reverse-well">
+<h2>Sign Up</h2>
+<p class="lead">And make all your dreams come true</p>
+<%= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :defaults => { :label => false }, :html => {:class => 'form-vertical' }) do |f| %>
+  <%= devise_error_messages! %>
+  <%= f.input :email, :placeholder => 'Email' %>
+  <%= f.input :username, :placeholder => 'Username' %>
+  <%= f.input :password, :placeholder => 'Password' %>
+  <%= f.input :password_confirmation, :placeholder => 'Password Sanity Check' %>
+  <%= f.submit "Sign up", :class => 'btn btn-info' %>
+<% end %>
+
+<%= render :partial => "devise/shared/links" %>
+</div>

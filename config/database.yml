@@ -1,0 +1,16 @@
+common: &common
+  adapter: postgresql
+  username: dayable
+  password: dayable
+
+development:
+  <<: *common
+  database: dayable_development
+
+test:
+  <<: *common
+  database: dayable_test
+
+production:
+  <<: *common
+  database: dayable_production

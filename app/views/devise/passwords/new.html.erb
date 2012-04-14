@@ -1,0 +1,12 @@
+<div class="hero-unit reverse-well">
+<h2>Forgot your password?</h2>
+<p></p>
+<%= simple_form_for(resource, :as => resource_name, :url => password_path(resource_name), :defaults => { :label => false }, :html => {:class => 'form-horizontal', :method => :post }) do |f| %>
+  <%= devise_error_messages! %>
+  <%= f.email_field :email, :placeholder => 'Email' %>
+  <%= f.submit "Send me reset password instructions", :class => 'btn btn-info' %>
+<% end %>
+
+<%= render "links" %>
+
+</div>
