@@ -1,12 +1,12 @@
 <% if !user_signed_in? %>
 
-<div class="hero-unit">
+<div class="hero-unit road-bg">
 <h1>Dayable</h1>
 <p class="lead">Keep track of your success every day! Form habits! Be awesome!</p>
-<p><a class="btn btn-success btn-large">Let me at it »</a></p>
+<p><a class="btn btn-success btn-large">Sign up for free</a></p>
 </div>
 
-<div class="row">
+<div class="row-fluid">
   <div class="span6">
     <h2>Phase 1</h2>
     <p class="lead">Make a list of the things you'd like to do every day.</p>
@@ -21,15 +21,15 @@
 
 
 
-<div class="row">
+<div class="row-fluid">
   <div class="span4 well">
-    <h1>Your Dayables</h1>
+    <h1>Your Habits In The Making</h1>
     <ul>
   <% @habits.each do |habit| %>
   <!--<li style="color: #<%= habit.color %>">-->
   <li>
     <div class="reverse-well" style="padding: 10px; margin-bottom: 10px;">
-    <span class="lead"><%= link_to habit.content, habit %></span>
+    <span class="lead"><%= link_to habit.content, habit, { :style => "color: #" + habit.color.to_s(16) } %></span>
     <br/>
     <%= link_to(edit_habit_path(habit), :remote => true, :class => 'btn') do %><i class="icon-pencil"></i><% end %>
     <%= link_to(habit, confirm: 'Aare you sure?', :method => :delete, :class => 'btn btn-danger') do %> <i class="icon-trash"></i><% end %>
@@ -42,7 +42,22 @@
 <%= link_to raw('<i class="icon-plus"></i> New'), new_habit_path, :class => 'btn btn-large' %>
   </div>
   <div class="span6">
-    <h1>Your Streak</h1>
+    <h1 class="year"></h1>
+        
+        <h2 class="time"></h2>
+      
+        <h3 class="month"></h3>
+
+        <br/>
+      
+        <table id="calendar" class="calendar">
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+        
+        <input type="button" name="last" id="last" value="Previous" class="btn">
+        <input type="button" name="current" id="current" value="Current" class="btn">
+        <input type="button" name="next" id="next" value="Next" class="btn">
   </div>
 </div>
 
