@@ -1,6 +1,7 @@
 class Habit < ActiveRecord::Base
 
   belongs_to :user
+  has_many :users, :through => :chains
 
   validates :content, :presence => true
   validates :color, :presence => true

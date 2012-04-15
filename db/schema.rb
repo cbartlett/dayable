@@ -11,7 +11,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120414065339) do
+ActiveRecord::Schema.define(:version => 20120415175329) do
+
+  create_table "chains", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "habit_id"
+    t.datetime "day"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "habits", :force => true do |t|
     t.string   "content"

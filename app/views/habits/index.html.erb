@@ -19,7 +19,10 @@
 
 <% else %>
 
-
+  
+  <p class="alert alert-info" style="display: none"></p>
+  <p class="alert alert-error" style="display: none"></p>
+  
 
 <div class="row-fluid">
   <div class="span4 well">
@@ -29,14 +32,15 @@
   <!--<li style="color: #<%= habit.color %>">-->
   <li>
     <div class="reverse-well" style="padding: 10px; margin-bottom: 10px;">
-    <span class="lead"><%= link_to habit.content, habit, { :style => "color: #" + habit.color.to_s(16) } %></span>
-    <br/>
-    <%= link_to(edit_habit_path(habit), :remote => true, :class => 'btn') do %><i class="icon-pencil"></i><% end %>
-    <%= link_to(habit, confirm: 'Aare you sure?', :method => :delete, :class => 'btn btn-danger') do %> <i class="icon-trash"></i><% end %>
+    <a href="#" class="lead add-habit" id="<%= habit.id %>" rel="tooltip" title="Click this then click a date to add a habit." style="color: #<%= decimalToHexString(habit.color) %>"><%= habit.content %></a>
+    <%= link_to(edit_habit_path(habit), :remote => true) do %><i class="icon-pencil"></i><% end %>
+    <%= link_to(habit, confirm: 'Aare you sure?', :method => :delete, :remote => true) do %> <i class="icon-trash"></i><% end %>
     </div>
   </li>
   <% end %>
 </ul>
+
+<input type="hidden" id="habit-id" />
 
 <br/>
 <%= link_to raw('<i class="icon-plus"></i> New'), new_habit_path, :class => 'btn btn-large' %>
@@ -44,20 +48,23 @@
   <div class="span6">
     <h1 class="year"></h1>
         
-        <h2 class="time"></h2>
-      
-        <h3 class="month"></h3>
+    <h2 class="time"></h2>
+  
+    <h3 class="month"></h3>
 
-        <br/>
-      
-        <table id="calendar" class="calendar">
-          <thead></thead>
-          <tbody></tbody>
-        </table>
-        
-        <input type="button" name="last" id="last" value="Previous" class="btn">
-        <input type="button" name="current" id="current" value="Current" class="btn">
-        <input type="button" name="next" id="next" value="Next" class="btn">
+    <br/>
+  
+    <table id="calendar" class="calendar">
+      <thead></thead>
+      <tbody></tbody>
+    </table>
+    
+    <input type="button" name="last" id="last" value="Previous" class="btn">
+    <input type="button" name="current" id="current" value="Current" class="btn">
+    <input type="button" name="next" id="next" value="Next" class="btn">
+
+    <ul id="habit-list">
+    <ul>
   </div>
 </div>
 

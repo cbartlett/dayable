@@ -1,18 +1,8 @@
-// This is a manifest file that'll be compiled into application.js, which will include all the files
-// listed below.
-//
-// Any JavaScript/Coffee file within this directory, lib/assets/javascripts, vendor/assets/javascripts,
-// or vendor/assets/javascripts of plugins, if any, can be referenced here using a relative path.
-//
-// It's not advisable to add code directly here, but if you do, it'll appear at the bottom of the
-// the compiled file.
-//
-// WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
-// GO AFTER THE REQUIRES BELOW.
 //
 //= require jquery
 //= require jquery_ujs
 //= require_tree .
+//= require twitter/bootstrap/tooltip
 
 var ui = {
 
@@ -84,7 +74,7 @@ var ui = {
         ];
         
         // Events
-        var evnt = {"event" : [
+        /*var evnt = {"event" : [
              {"date":"12/25","title":"Christmas"}
             ,{"date":"1/01","title":"New Year's Day"}
             ,{"date":"11/22","title":"Thanksgiving"}
@@ -92,7 +82,7 @@ var ui = {
             ,{"date":"7/04","title":"Independence Day"}
             ,{"date":"5/28","title":"Memorial Day"}
             ,{"date":"2/28","title":"President's Day"}
-        ]};
+        ]};*/
     
         // Leap year
         if(now.getYear()%4 == 0){
@@ -153,12 +143,12 @@ var ui = {
                 
                 
                 // Check Event schedule
-                $.each(evnt.event,function(){   
+                /*$.each(evnt.event,function(){   
                     if(this.date == mon.getMonth()+1 + "/" + dow.substr(-2)){
                         cls = "holiday";
                         msg = this.title;
                     }
-                });
+                });*/
                 
                 
                 // Set class
@@ -177,15 +167,16 @@ var ui = {
                 }
                 
                 // Set ID
-                id = "cell_" + i + "" + j + "" + dow;
+                //id = "cell_" + i + "" + j + "" + dow;
+                id = new Date(mon.getFullYear(), mon.getMonth(), dow).toDateString().replace(/ /gi, '-')
                 
                 // Render HTML
                 if(dow == 0){
                     _html += '<td>&nbsp;</td>';
                 }else if(msg.length > 0){
-                    _html += '<td class="' +cls+ '" id="'+id+'">' + dow.substr(-2) + '<br/><span class="content">'+msg+'</span></td>';
+                    _html += '<td class="' +cls+ '" id="'+id+'" data-dow="' + dow.substr(-2) + '">' + dow.substr(-2) + '<br/><span class="content">'+msg+'</span></td>';
                 }else{
-                    _html += '<td class="' +cls+ '" id="'+id+'">' + dow.substr(-2) + '</td>';
+                    _html += '<td class="' +cls+ '" id="'+id+'" data-dow="' + dow.substr(-2) + '">' + dow.substr(-2) + '</td>';
                 }
                 
             }
@@ -251,7 +242,7 @@ $(document).ready(function(){
         
     // Render the calendar
     ui.renderCalendar();
-    
-    ui.renderTime();
+
+    //ui.renderTime();
     
 });

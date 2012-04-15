@@ -1,4 +1,7 @@
 class HabitsController < ApplicationController
+
+  before_filter :authenticate_user!, :except => [:show, :index]
+
   # GET /habits
   # GET /habits.json
   def index
@@ -50,7 +53,7 @@ class HabitsController < ApplicationController
 
     respond_to do |format|
       if @habit.save
-        format.html { redirect_to @habit, notice: 'Woo! You\'re on your way to habit town!' }
+        format.html { redirect_to habits_url, notice: 'Woo! You\'re on your way to habit town!' }
         format.json { render json: @habit, status: :created, location: @habit }
       else
         format.html { render action: "new" }

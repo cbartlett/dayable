@@ -10,6 +10,8 @@ Dayable::Application.routes.draw do
   resources :users
 
   resources :habits
+  resources :chains
+  
   root :to => 'habits#index'
   
 
