@@ -24,7 +24,7 @@ class ChainsController < ApplicationController
 
     if @chain.save
       # TODO: Return the number of links in the chain in this message (select count(*) from chains where user_id = '1' and habit_id = '1')
-      respond_with(@chain, :status => :created, :location => @chain)
+      respond_with({:chain => @chain, :habit => @chain.habit}, :status => :created, :location => @chain)
     else
       respond_with(@chain.errors, :status => :unprocessable_entity)
     end

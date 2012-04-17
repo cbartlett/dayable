@@ -37,30 +37,34 @@ $ ->
   $('.add-habit').tooltip()
 
   $('.add-habit').click ->
-      $('#habit-id').val $(this).attr('id')
-      $('.lead').css 'font-weight', '200'
-      $(this).css 'font-weight', 'bold'
+      current_id = $('#habit-id').val()
+      if current_id == $(this).attr('id')
+        $('#habit-id').val ''
+        $('.lead').css 'font-weight', '200'
+      else
+        $('#habit-id').val $(this).attr('id')
+        $('.lead').css 'font-weight', '200'
+        $(this).css 'font-weight', 'bold'
 
   $('#calendar td').live 'click', ->
     habitID = $('#habit-id').val()
     day = new Date($('h1.year').text(), m[$('h3.month').text()], $(this).data('dow'))
-    if habitID == null or habitID == ''
-      # TODO: show the list of habits below the calendar
-      $('#habit-list').html('')
-      $.get '/chains?day=' + day, 
-        (data) ->
-          console.log data
-          for chain in data
-            $('#habit-list').append('<li style="color: #' + decimalToHex(chain.habit.color) + '"><span class="lead">X ' + chain.habit.content + '<span></li>')
-    else
+    $('#habit-list').html('')
+    $.get '/chains?day=' + day, 
+      (data) ->
+        for chain in data
+          $('#habit-list').append('<li style="color: #' + decimalToHex(chain.habit.color) + '"><span class="lead">X ' + chain.habit.content + '<span></li>')
+    if habitID != null and habitID != ''
       $.post('/chains',
         'chain[habit_id]': habitID
         'chain[user_id]': 0
         'chain[day]': day,
         (data) =>
-          $(this).text($(this).text() + ' X')
+          if $(this).text().indexOf('X') == -1
+            $(this).text($(this).text() + ' X')
+          if data
+            $('#habit-list').append('<li style="color: #' + decimalToHex(data.habit.color) + '"><span class="lead">X ' + data.habit.content + '<span></li>')
         ).error (data) ->
-          console.log data.responseText
           response = JSON.parse data.responseText
           responseString = ""
 
