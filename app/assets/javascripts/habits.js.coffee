@@ -128,6 +128,7 @@ $ ->
 
     habitID = $('#habit-id').val()
     day = new Date($('h1.year').text(), m[$('h3.month').text()], $(this).data('dow'))
+    console.log day
     chainListHtml = "<ul id='chain-list'>"
     if habitID == null or habitID == ''
       $.get '/chains?day=' + day, 
@@ -139,7 +140,6 @@ $ ->
           if chains.length == 0
             chainListHtml = "No habits?! But why?!"
 
-          # some ux friendliness
           # initialize and show popover
           $(this).attr('data-content', chainListHtml)
           $(this).popover({ placement: 'top', trigger: 'manual', title: 'Habits<a class="close pull-right">&times;</a>' }).popover('show')

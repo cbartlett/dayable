@@ -2,6 +2,7 @@ common: &common
   adapter: postgresql
   username: dayable
   password: dayable
+  host: localhost
 
 development:
   <<: *common
