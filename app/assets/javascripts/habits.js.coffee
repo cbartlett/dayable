@@ -111,10 +111,10 @@ $ ->
       type: 'DELETE',
       url: '/chains/' + $(this).data('id')
       success: (chain) =>
-        $(this).closest('li').remove()
-        # TODO remove X in calendar
-        if $(this).closest('ul').children().length == 0
+        if $(this).closest('ul').children().length == 1
           $('#' + day).text($('#' + day).text().replace('X', ''))
+        $(this).closest('li').remove()
+        
 
   $(document).live 'keyup', (e) ->
     if e.keyCode == 27
