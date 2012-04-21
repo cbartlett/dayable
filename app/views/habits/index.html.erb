@@ -1,12 +1,12 @@
 <% if !user_signed_in? %>
 
-<div class="hero-unit road-bg">
+<div class="hero-unit">
 <h1>Dayable</h1>
 <p class="lead">Keep track of your success every day! Form habits! Be awesome!</p>
 <p><a class="btn btn-success btn-large">Sign up for free</a></p>
 </div>
 
-<div class="row-fluid">
+<div class="row">
   <div class="span6">
     <h2>Phase 1</h2>
     <p class="lead">Make a list of the things you'd like to do every day.</p>
@@ -24,16 +24,16 @@
   <p class="alert alert-error" style="display: none"></p>
   
 
-<div class="row-fluid">
+<div class="row">
   <div class="span4 well">
-    <h1>Your Habits In The Making</h1>
-    <ul>
+    <h1>Soon To Be Habits</h1>
+    <ul id="habit-list">
   <% @habits.each do |habit| %>
   <li>
-    <div class="reverse-well" style="padding: 10px; margin-bottom: 10px;">
-    <a href="#" class="lead add-habit" id="<%= habit.id %>" rel="tooltip" title="Click this then click a date to add a habit."><%= habit.content %></a>
-    <%= link_to(edit_habit_path(habit), :remote => true) do %><i class="icon-pencil"></i><% end %>
-    <%= link_to(habit, confirm: 'Are you sure?', :method => :delete, :remote => true) do %> <i class="icon-trash"></i><% end %>
+    <div class="reverse-well">
+    <a href="javascript://" class="lead add-habit" data-id="<%= habit.id %>" rel="tooltip" title="Click this then click a date to add a habit."><%= habit.content %></a>
+    <a href="javascript://" class="edit-habit" data-id="<%= habit.id %>"><i class="icon-pencil"></i></a>
+    <a href="javascript://" class="delete-habit" data-id="<%= habit.id %>"><i class="icon-trash"></i></a>
     </div>
   </li>
   <% end %>
@@ -62,7 +62,7 @@
     <input type="button" name="current" id="current" value="Current" class="btn">
     <input type="button" name="next" id="next" value="Next" class="btn">
 
-    <ul id="habit-list">
+    <ul id="chain-list">
     <ul>
   </div>
 </div>

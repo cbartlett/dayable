@@ -1,7 +1,8 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require_tree .
+//= require underscore
+//= require habits
 //= require twitter/bootstrap/tooltip
 
 var ui = {
