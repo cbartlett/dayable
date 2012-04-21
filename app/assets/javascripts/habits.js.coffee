@@ -28,7 +28,7 @@ $ ->
 
   $('#new-habit').click ->
     # show textbox
-
+    
 
   $('.add-habit').tooltip()
 
