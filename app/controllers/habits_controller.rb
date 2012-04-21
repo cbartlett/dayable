@@ -7,14 +7,20 @@ class HabitsController < ApplicationController
   # GET /habits
   # GET /habits.json
   def index
-    @habits = Habit.all
-
-    respond_with @habits
+    if current_user
+      @habits = Habit.find_all_by_user_id(current_user.id)
+    else
+      respond_with nil
+    end
   end
 
   def show
     @habit = Habit.find(params[:id])
-    respond_with @habit
+    if @habit.user_id == current_user.id
+      respond_with @habit
+    else
+      respond_with nil
+    end
   end
 
   # POST /habits
@@ -36,7 +42,7 @@ class HabitsController < ApplicationController
   def update
     @habit = Habit.find(params[:id])
 
-    if @habit.update_attributes(params[:habit])
+    if @habit.user_id == current_user.id and @habit.update_attributes(params[:habit])
       respond_with @habit
     else
       respond_with @habit.errors, status: :unprocessable_entity
@@ -47,8 +53,12 @@ class HabitsController < ApplicationController
   # DELETE /habits/1.json
   def destroy
     @habit = Habit.find(params[:id])
-    @habit.destroy
 
-    respond_with @habit
+    if @habit.user_id == current_user.id
+      @habit.destroy
+      respond_with @habit
+    else
+      respond_with @habit.errors, status: :unprocessable_entity
+    end
   end
 end

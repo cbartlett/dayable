@@ -8,10 +8,10 @@ class ChainsController < ApplicationController
     if params[:day]
       # try to parse the date
       day = Date.parse(params[:day])
-      @chains = Chain.find_all_by_day(day, :include => [:habit])
+      @chains = Chain.find_all_by_day_and_user_id(day, current_user.id, :include => [:habit])
       respond_with(@chains, :include => :habit)
     else
-      @chains = Chain.all
+      @chains = Chain.find_all_by_user_id(current_user.id)
       respond_with(@chains)
     end
     
