@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120417045318) do
+ActiveRecord::Schema.define(:version => 20120421071019) do
 
   create_table "chains", :force => true do |t|
     t.integer  "user_id"
@@ -25,7 +25,6 @@ ActiveRecord::Schema.define(:version => 20120417045318) do
 
   create_table "habits", :force => true do |t|
     t.string   "content"
-    t.integer  "color"
     t.integer  "user_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false

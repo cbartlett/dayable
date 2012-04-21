@@ -16,13 +16,6 @@ m =
   "November"   : 10,
   "December"   : 11
 
-decimalToHex = (i) ->
-  return '00000' + i.toString 16 if i >= 0 and i <= 15
-  return '0000' + i.toString 16 if i >= 16 and i <= 255
-  return '000' + i.toString 16 if i >= 256 and i <= 4095
-  return '00' + i.toString 16 if i >= 4096 and i <= 65535
-  return i.toString(16)
-
 $ ->
 
   $.get '/chains',
@@ -32,6 +25,9 @@ $ ->
         dow = $('#' + chainDate).text()
         if $('#' + chainDate).text().indexOf('X') == -1
           $('#' + chainDate).text(dow + ' X')
+
+  $('#new-habit').click ->
+    # show textbox
 
 
   $('.add-habit').tooltip()
@@ -53,7 +49,7 @@ $ ->
     $.get '/chains?day=' + day, 
       (data) ->
         for chain in data
-          $('#habit-list').append('<li style="color: #' + decimalToHex(chain.habit.color) + '"><span class="lead">X ' + chain.habit.content + '<span></li>')
+          $('#habit-list').append('<li><span class="lead">X ' + chain.habit.content + '<span></li>')
     if habitID != null and habitID != ''
       $.post('/chains',
         'chain[habit_id]': habitID
@@ -63,7 +59,7 @@ $ ->
           if $(this).text().indexOf('X') == -1
             $(this).text($(this).text() + ' X')
           if data
-            $('#habit-list').append('<li style="color: #' + decimalToHex(data.habit.color) + '"><span class="lead">X ' + data.habit.content + '<span></li>')
+            $('#habit-list').append('<li><span class="lead">X ' + data.habit.content + '<span></li>')
         ).error (data) ->
           response = JSON.parse data.responseText
           responseString = ""

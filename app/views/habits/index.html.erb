@@ -29,12 +29,11 @@
     <h1>Your Habits In The Making</h1>
     <ul>
   <% @habits.each do |habit| %>
-  <!--<li style="color: #<%= habit.color %>">-->
   <li>
     <div class="reverse-well" style="padding: 10px; margin-bottom: 10px;">
-    <a href="#" class="lead add-habit" id="<%= habit.id %>" rel="tooltip" title="Click this then click a date to add a habit." style="color: #<%= decimalToHexString(habit.color) %>"><%= habit.content %></a>
+    <a href="#" class="lead add-habit" id="<%= habit.id %>" rel="tooltip" title="Click this then click a date to add a habit."><%= habit.content %></a>
     <%= link_to(edit_habit_path(habit), :remote => true) do %><i class="icon-pencil"></i><% end %>
-    <%= link_to(habit, confirm: 'Aare you sure?', :method => :delete, :remote => true) do %> <i class="icon-trash"></i><% end %>
+    <%= link_to(habit, confirm: 'Are you sure?', :method => :delete, :remote => true) do %> <i class="icon-trash"></i><% end %>
     </div>
   </li>
   <% end %>
@@ -43,7 +42,7 @@
 <input type="hidden" id="habit-id" />
 
 <br/>
-<%= link_to raw('<i class="icon-plus"></i> New'), new_habit_path, :class => 'btn btn-large' %>
+<a href="javascript://" id="new-habit" class="btn btn-large"><i class="icon-plus"></i> New</a>
   </div>
   <div class="span6">
     <h1 class="year"></h1>
