@@ -27,6 +27,7 @@
 
   <body>
 
+    <% if user_signed_in? %>
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
@@ -50,21 +51,43 @@
         </div>
       </div>
     </div>
+    <% else %>
+      <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="/">Dayable</a>
+          <div class="nav-collapse">
+            <ul class="nav pull-right">
+              <li><a href="/about">About Me</a></li>
+              <% if user_signed_in? %>
+                <li><%= link_to "Sign Out", destroy_user_session_path, :method => :delete %></li>
+              <% else %>
+                <li class="<%= 'active' if request.url.include? new_user_registration_path %>"><%= link_to "Sign Up", new_user_registration_path %></li>
+                <li class="<%= 'active' if request.url.include? new_user_session_path %>"><%= link_to "Sign In", new_user_session_path %></li>
+            <% end %>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+    <% end %>
 
+    <% if user_signed_in? %>
     <div class="container">
+    <% else %>
+    <div class="container-fluid">
+    <% end %>
 
       <%= yield %>
 
-      <% if !notice.nil? %>
-      <p class="alert alert-info"><%= notice %></p>
-      <% end %>
-      <% if !alert.nil? %>
-      <p class="alert alert-error"><%= alert %></p>
-      <% end %>
-
       <hr />
       <footer>
-        <p>&copy; swlkr</p>
+        <p>swlkr'd</p>
       </footer>
 
     </div> <!-- /container -->

@@ -82,25 +82,68 @@ $ ->
 
   $('.add-habit').tooltip()
 
-  $('.add-habit').click ->
+  $('.add-habit').live 'click',  ->
       current_id = $('#habit-id').val()
-      if current_id == $(this).data('id')
+      if parseInt(current_id, 10) == parseInt($(this).data('id'), 10)
         $('#habit-id').val ''
-        $('.lead').css 'font-weight', '200'
+        $('.add-habit').css 'font-weight', '200'
       else
         $('#habit-id').val $(this).data('id')
-        $('.lead').css 'font-weight', '200'
+        $('.add-habit').css 'font-weight', '200'
         $(this).css 'font-weight', 'bold'
 
+  $('#next, #last, #current').live 'click', ->
+    $('.popover').remove()
+    $.get '/chains',
+    (data) ->
+      for chain in data
+        chainDate = new Date(chain.day.toString()).toDateString().replace(/[ ]/gi, '-')
+        dow = $('#' + chainDate).text()
+        if $('#' + chainDate).text().indexOf('X') == -1
+          $('#' + chainDate).text(dow + ' X')
+
+  $('.delete-chain').live 'click', ->
+    day = new Date($(this).data('day').toString()).toDateString().replace(/[ ]/gi, '-')
+    $.ajax
+      type: 'DELETE',
+      url: '/chains/' + $(this).data('id')
+      success: (chain) =>
+        $(this).closest('li').remove()
+        # TODO remove X in calendar
+        if $(this).closest('ul').children().length == 0
+          console.log day
+          $('#' + day).text($('#' + day).text().replace('X', ''))
+
+  $(document).live 'keyup', (e) ->
+    if e.keyCode == 27
+      $('.popover').remove()
+
+  $('a.close').live 'click', ->
+    $('.popover').remove()
+
   $('#calendar td').live 'click', ->
+
+    # remove previous popover
+    $('.popover').remove()
+
     habitID = $('#habit-id').val()
     day = new Date($('h1.year').text(), m[$('h3.month').text()], $(this).data('dow'))
-    $('#chain-list').html('')
-    $.get '/chains?day=' + day, 
-      (data) ->
-        for chain in data
-          $('#chain-list').append('<li><span class="lead">X ' + chain.habit.content + '<span></li>')
-    if habitID != null and habitID != ''
+    chainListHtml = "<ul id='chain-list'>"
+    if habitID == null or habitID == ''
+      $.get '/chains?day=' + day, 
+        (chains) =>
+          for chain in chains
+            chainListHtml += '<li><span class="lead">' + chain.habit.content + '<span><a href="javascript://" class="delete-chain" data-day="' + chain.day + '" data-id="' + chain.id + '"><i class="icon-remove"></i></a></li>'
+          chainListHtml += "</ul>"
+
+          if chains.length == 0
+            chainListHtml = "No habits?! But why?!"
+
+          # some ux friendliness
+          # initialize and show popover
+          $(this).attr('data-content', chainListHtml)
+          $(this).popover({ placement: 'top', trigger: 'manual', title: 'Habits<a class="close pull-right">&times;</a>' }).popover('show')
+    else
       $.post('/chains',
         'chain[habit_id]': habitID
         'chain[user_id]': 0
@@ -108,8 +151,20 @@ $ ->
         (data) =>
           if $(this).text().indexOf('X') == -1
             $(this).text($(this).text() + ' X')
-          if data
-            $('#chain-list').append('<li><span class="lead">X ' + data.habit.content + '<span></li>')
+          # get a list of all of the chains to list in the popover
+          # TODO: figure out a better way to do this
+          $.get '/chains?day=' + day,
+            (chains) =>
+              for chain in chains
+                chainListHtml += '<li><span class="lead">' + chain.habit.content + '<span><a href="javascript://" class="delete-chain" data-day="' + chain.day + '" data-id="' + chain.id + '"><i class="icon-remove"></i></a></li>'
+              chainListHtml += "</ul>"
+
+              if chains.length == 0
+                chainListHtml = "No habits?! But why?!"
+                
+              $(this).attr('data-content', chainListHtml)
+              $(this).popover({ placement: 'top', trigger: 'manual', title: 'Habits<a class="close pull-right">&times;</a>' }).popover('show')
+
         ).error (data) ->
           response = JSON.parse data.responseText
           responseString = ""

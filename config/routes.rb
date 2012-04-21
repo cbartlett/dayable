@@ -13,6 +13,7 @@ Dayable::Application.routes.draw do
   resources :chains
   
   root :to => 'habits#index'
-  
+
+  match 'about' => 'home#about'
 
 end

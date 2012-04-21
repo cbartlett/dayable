@@ -1,6 +1,6 @@
 class ChainsController < ApplicationController
 
-  before_filter :authenticate_user!, :except => [:index]
+  before_filter :authenticate_user!
   respond_to :json
 
   # GET /chains
@@ -24,10 +24,20 @@ class ChainsController < ApplicationController
 
     if @chain.save
       # TODO: Return the number of links in the chain in this message (select count(*) from chains where user_id = '1' and habit_id = '1')
+      # number of links = consecutive days this habit has been completed
       respond_with({:chain => @chain, :habit => @chain.habit}, :status => :created, :location => @chain)
     else
       respond_with(@chain.errors, :status => :unprocessable_entity)
     end
+
+  end
+
+  # DELETE /chains/1
+  def destroy
+    @chain = Chain.find(params[:id])
+    @chain.destroy
+
+    respond_with @chain
 
   end
 

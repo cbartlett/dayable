@@ -1,19 +1,20 @@
 <% if !user_signed_in? %>
 
-<div class="hero-unit">
+<div class="hero-unit road-bg">
 <h1>Dayable</h1>
-<p class="lead">Keep track of your success every day! Form habits! Be awesome!</p>
-<p><a class="btn btn-success btn-large">Sign up for free</a></p>
+<p class="lead">Keep track of your success every day!<br/>
+  Form habits! Be awesome!</p>
+<p><a href="/signup" class="btn btn-success btn-large">Sign up for free</a></p>
 </div>
 
-<div class="row">
+<div class="row-fluid">
   <div class="span6">
-    <h2>Phase 1</h2>
+    <h2>Step 1</h2>
     <p class="lead">Make a list of the things you'd like to do every day.</p>
   </div>
   <div class="span6">
-    <h2>Phase 2</h2>
-    <p class="lead">Tap or click a day in your calendar to lay it down. See how long you can keep the chain going! Form those habits!</p>
+    <h2>Step 2</h2>
+    <p class="lead">Select an item in your list then select a day in your calendar to start a chain.<br/>See how long you can keep the chain going! Form those habits!</p>
   </div>
 </div>
 
@@ -25,7 +26,7 @@
   
 
 <div class="row">
-  <div class="span4 well">
+  <div class="span4">
     <h1>Soon To Be Habits</h1>
     <ul id="habit-list">
   <% @habits.each do |habit| %>
@@ -42,9 +43,9 @@
 <input type="hidden" id="habit-id" />
 
 <br/>
-<a href="javascript://" id="new-habit" class="btn btn-large"><i class="icon-plus"></i> New</a>
+<a href="javascript://" id="new-habit" class="btn btn-large"><i class="icon-plus"></i> Start A Habit</a>
   </div>
-  <div class="span6">
+  <div class="span8">
     <h1 class="year"></h1>
         
     <h2 class="time"></h2>
@@ -58,12 +59,9 @@
       <tbody></tbody>
     </table>
     
-    <input type="button" name="last" id="last" value="Previous" class="btn">
-    <input type="button" name="current" id="current" value="Current" class="btn">
-    <input type="button" name="next" id="next" value="Next" class="btn">
-
-    <ul id="chain-list">
-    <ul>
+    <button id="last" class="btn btn-large">Last</button>
+    <button id="current" class="btn btn-large">Current</button>
+    <button id="next" class="btn btn-large">Next</button>
   </div>
 </div>
 

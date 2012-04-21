@@ -3,7 +3,8 @@
 //= require jquery_ujs
 //= require underscore
 //= require habits
-//= require twitter/bootstrap/tooltip
+//= require bootstrap-tooltip
+//= require bootstrap-popover
 
 var ui = {
 
@@ -175,9 +176,9 @@ var ui = {
                 if(dow == 0){
                     _html += '<td>&nbsp;</td>';
                 }else if(msg.length > 0){
-                    _html += '<td class="' +cls+ '" id="'+id+'" data-dow="' + dow.substr(-2) + '">' + dow.substr(-2) + '<br/><span class="content">'+msg+'</span></td>';
+                    _html += '<td class="' +cls+ '" id="'+id+'" rel="popover" data-dow="' + dow.substr(-2) + '">' + dow.substr(-2) + '<br/><span class="content">'+msg+'</span></td>';
                 }else{
-                    _html += '<td class="' +cls+ '" id="'+id+'" data-dow="' + dow.substr(-2) + '">' + dow.substr(-2) + '</td>';
+                    _html += '<td class="' +cls+ '" id="'+id+'" rel="popover" data-dow="' + dow.substr(-2) + '">' + dow.substr(-2) + '</td>';
                 }
                 
             }
@@ -202,31 +203,6 @@ var ui = {
     },
     
     
-    // Render Clock
-    "renderTime" : function(){
-        var now = new Date();
-        
-        var tt = "AM";
-        var hh = now.getHours();
-        var nn = "0" + now.getMinutes();
-        
-        if(now.getHours()>12){
-            hh = now.getHours()-12;
-            tt = "PM";
-        }
-        
-        $('.time').html(
-            hh + ":" + nn.substr(-2) + " " + tt
-        );
-        
-        var doit = function(){
-            ui.renderTime();
-        }
-        
-        setTimeout(doit,500);
-    },
-    
-    
     // Initialization
     "init" : function(){
     }
@@ -243,7 +219,5 @@ $(document).ready(function(){
         
     // Render the calendar
     ui.renderCalendar();
-
-    //ui.renderTime();
     
 });
