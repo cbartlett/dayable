@@ -16,6 +16,9 @@ m =
   "November"   : 10,
   "December"   : 11
 
+parsePgDate = (db_date) ->
+  return new Date(db_date.split('-')[0], db_date.split('-')[1]-1, db_date.split('-')[2]).toDateString().replace(/[ ]/gi, '-')
+
 $ ->
 
   _.templateSettings = 
@@ -32,7 +35,7 @@ $ ->
   $.get '/chains',
     (data) ->
       for chain in data
-        chainDate = new Date(chain.day.toString()).toDateString().replace(/[ ]/gi, '-')
+        chainDate = parsePgDate chain.day
         dow = $('#' + chainDate).text()
         if $('#' + chainDate).text().indexOf('X') == -1
           $('#' + chainDate).text(dow + ' X')
@@ -97,13 +100,13 @@ $ ->
     $.get '/chains',
     (data) ->
       for chain in data
-        chainDate = new Date(chain.day.toString()).toDateString().replace(/[ ]/gi, '-')
+        chainDate = parsePgDate chain.day
         dow = $('#' + chainDate).text()
         if $('#' + chainDate).text().indexOf('X') == -1
           $('#' + chainDate).text(dow + ' X')
 
   $('.delete-chain').live 'click', ->
-    day = new Date($(this).data('day').toString()).toDateString().replace(/[ ]/gi, '-')
+    day = parsePgDate $(this).data('day')
     $.ajax
       type: 'DELETE',
       url: '/chains/' + $(this).data('id')
@@ -111,7 +114,6 @@ $ ->
         $(this).closest('li').remove()
         # TODO remove X in calendar
         if $(this).closest('ul').children().length == 0
-          console.log day
           $('#' + day).text($('#' + day).text().replace('X', ''))
 
   $(document).live 'keyup', (e) ->
@@ -128,7 +130,6 @@ $ ->
 
     habitID = $('#habit-id').val()
     day = new Date($('h1.year').text(), m[$('h3.month').text()], $(this).data('dow'))
-    console.log day
     chainListHtml = "<ul id='chain-list'>"
     if habitID == null or habitID == ''
       $.get '/chains?day=' + day, 

@@ -7,7 +7,7 @@ class ChainsController < ApplicationController
   def index
     if params[:day]
       # try to parse the date
-      day = DateTime.parse(params[:day])
+      day = Date.parse(params[:day])
       @chains = Chain.find_all_by_day(day, :include => [:habit])
       respond_with(@chains, :include => :habit)
     else
