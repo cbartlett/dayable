@@ -39,27 +39,29 @@
   <p class="alert alert-error" style="display: none"></p>
   
 
-<div class="row">
-  <div class="span4">
+<div class="row-fluid">
+  <div class="span3">
+    <div id="habit-list-container">
     <h1>Soon To Be Habits</h1>
     <ul id="habit-list">
-  <% @habits.each do |habit| %>
-  <li>
-    <div class="reverse-well">
-    <a href="javascript://" class="lead add-habit" data-id="<%= habit.id %>" rel="tooltip" title="Click this then click a date to add a habit."><%= habit.content %></a>
-    <a href="javascript://" class="edit-habit" data-id="<%= habit.id %>"><i class="icon-pencil"></i></a>
-    <a href="javascript://" class="delete-habit" data-id="<%= habit.id %>"><i class="icon-trash"></i></a>
-    </div>
-  </li>
-  <% end %>
+      <% @habits.each do |habit| %>
+        <li>
+          <div class="reverse-well">
+            <a href="javascript://" class="lead add-habit" data-id="<%= habit.id %>"><%= habit.content %></a>
+            <a href="javascript://" class="edit-habit" data-id="<%= habit.id %>"><i class="icon-pencil"></i></a>
+            <a href="javascript://" class="delete-habit" data-id="<%= habit.id %>"><i class="icon-trash"></i></a>
+          </div>
+        </li>
+      <% end %>
 </ul>
+</div>
 
 <input type="hidden" id="habit-id" />
 
 <br/>
 <a href="javascript://" id="new-habit" class="btn btn-large"><i class="icon-plus"></i> Start A Habit</a>
   </div>
-  <div class="span8">
+  <div class="span9">
     <h1 class="year"></h1>
         
     <h2 class="time"></h2>

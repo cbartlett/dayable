@@ -32,13 +32,26 @@ $ ->
     <a href="javascript://" class="delete-habit" data-id="{{id}}"><i class="icon-trash"></i></a>
     </div>'
 
-  $.get '/chains',
-    (data) ->
-      for chain in data
-        chainDate = parsePgDate chain.day
-        dow = $('#' + chainDate).text()
-        if $('#' + chainDate).text().indexOf('X') == -1
-          $('#' + chainDate).text(dow + ' X')
+  clearCalendarData = ->
+    calendar_days = $('#calendar td')
+
+    for day in calendar_days
+      if($(day).text().indexOf('X') != -1)
+        $(day).text($(day).text().replace(' X', ''))
+
+  fillInCalendarData = (habitID) ->
+    # clear the calendar first
+    clearCalendarData()
+
+    $.get '/chains?habit_id=' + habitID,
+      (data) ->
+        for chain in data
+          chainDate = parsePgDate chain.day
+          dow = $('#' + chainDate).text()
+          $('#' + chainDate).attr('data-id', chain.id)
+          if $('#' + chainDate).text().indexOf('X') == -1
+            $('#' + chainDate).text(dow + ' X')
+
 
   $('#new-habit').click ->
     if $('#habit-content').length == 0
@@ -79,98 +92,60 @@ $ ->
           'habit[content]': $(this).val()
         success: (data) =>
           $(this).closest('li').remove()
-        error: (data) =>
-          console.log data
+        #error: (data) =>
           # handle error
-
-  $('.add-habit').tooltip()
 
   $('.add-habit').live 'click',  ->
       current_id = $('#habit-id').val()
       if parseInt(current_id, 10) == parseInt($(this).data('id'), 10)
         $('#habit-id').val ''
         $('.add-habit').css 'font-weight', '200'
+        clearCalendarData()
       else
         $('#habit-id').val $(this).data('id')
         $('.add-habit').css 'font-weight', '200'
         $(this).css 'font-weight', 'bold'
+        fillInCalendarData $(this).data('id')
 
   $('#next, #last, #current').live 'click', ->
-    $('.popover').remove()
-    $.get '/chains',
-    (data) ->
-      for chain in data
-        chainDate = parsePgDate chain.day
-        dow = $('#' + chainDate).text()
-        if $('#' + chainDate).text().indexOf('X') == -1
-          $('#' + chainDate).text(dow + ' X')
-
-  $('.delete-chain').live 'click', ->
-    day = parsePgDate $(this).data('day')
-    $.ajax
-      type: 'DELETE',
-      url: '/chains/' + $(this).data('id')
-      success: (chain) =>
-        if $(this).closest('ul').children().length == 1
-          $('#' + day).text($('#' + day).text().replace('X', ''))
-        $(this).closest('li').remove()
-        
-
-  $(document).live 'keyup', (e) ->
-    if e.keyCode == 27
-      $('.popover').remove()
-
-  $('a.close').live 'click', ->
-    $('.popover').remove()
+    habitID = $('#habit_id').val()
+    if habitID
+      fillInCalendarData habitID
 
   $('#calendar td').live 'click', ->
-
-    # remove previous popover
-    $('.popover').remove()
-
     habitID = $('#habit-id').val()
     day = new Date($('h1.year').text(), m[$('h3.month').text()], $(this).data('dow'))
-    chainListHtml = "<ul id='chain-list'>"
-    if habitID == null or habitID == ''
-      $.get '/chains?day=' + day, 
-        (chains) =>
-          for chain in chains
-            chainListHtml += '<li><span class="lead">' + chain.habit.content + '<span><a href="javascript://" class="delete-chain" data-day="' + chain.day + '" data-id="' + chain.id + '"><i class="icon-remove"></i></a></li>'
-          chainListHtml += "</ul>"
+    if habitID
+      if $(this).text().indexOf('X') == -1
+        $.post('/chains',
+          'chain[habit_id]': habitID
+          'chain[user_id]': 0
+          'chain[day]': day,
+          (chain) =>
+            day_text = $(this).text()
+            $(this).text day_text + ' X'
+            $(this).attr('data-id', chain.id)
+          ).error (data) ->
+            response = JSON.parse data.responseText
+            responseString = ""
 
-          if chains.length == 0
-            chainListHtml = "No habits?! But why?!"
+            for k,v of response
+              responseString += v + '\n'
+            $('p.alert-error').css('display', 'block').text(responseString)
+      else
+        if $(this).attr('data-id')
+          $.post('/chains/' + $(this).attr('data-id'), 
+            { _method: 'delete' }, 
+            (chain) =>
+              chainDate = day.toDateString().replace(/[ ]/gi, '-')
+              $('#' + chainDate).text($('#' + chainDate).text().replace('X', ''))
+              $(this).data 'id', ''
+            ).error (data) ->
+              response = JSON.parse data.responseText
+              responseString = ""
 
-          # initialize and show popover
-          $(this).attr('data-content', chainListHtml)
-          $(this).popover({ placement: 'top', trigger: 'manual', title: 'Habits<a class="close pull-right">&times;</a>' }).popover('show')
-    else
-      $.post('/chains',
-        'chain[habit_id]': habitID
-        'chain[user_id]': 0
-        'chain[day]': day,
-        (data) =>
-          if $(this).text().indexOf('X') == -1
-            $(this).text($(this).text() + ' X')
-          # get a list of all of the chains to list in the popover
-          # TODO: figure out a better way to do this
-          $.get '/chains?day=' + day,
-            (chains) =>
-              for chain in chains
-                chainListHtml += '<li><span class="lead">' + chain.habit.content + '<span><a href="javascript://" class="delete-chain" data-day="' + chain.day + '" data-id="' + chain.id + '"><i class="icon-remove"></i></a></li>'
-              chainListHtml += "</ul>"
-
-              if chains.length == 0
-                chainListHtml = "No habits?! But why?!"
-                
-              $(this).attr('data-content', chainListHtml)
-              $(this).popover({ placement: 'top', trigger: 'manual', title: 'Habits<a class="close pull-right">&times;</a>' }).popover('show')
-
-        ).error (data) ->
-          response = JSON.parse data.responseText
-          responseString = ""
-
-          for k,v of response
-            responseString += v + '\n'
-          $('p.alert-error').css('display', 'block').text(responseString)
+              for k,v of response
+                responseString += v + '\n'
+              $('p.alert-error').css('display', 'block').text(responseString)
+            
 

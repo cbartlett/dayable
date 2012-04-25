@@ -176,9 +176,9 @@ var ui = {
                 if(dow == 0){
                     _html += '<td>&nbsp;</td>';
                 }else if(msg.length > 0){
-                    _html += '<td class="' +cls+ '" id="'+id+'" rel="popover" data-dow="' + dow.substr(-2) + '">' + dow.substr(-2) + '<br/><span class="content">'+msg+'</span></td>';
+                    _html += '<td class="' +cls+ '" id="'+id+'" data-dow="' + dow.substr(-2) + '">' + dow.substr(-2) + '<br/><span class="content">'+msg+'</span></td>';
                 }else{
-                    _html += '<td class="' +cls+ '" id="'+id+'" rel="popover" data-dow="' + dow.substr(-2) + '">' + dow.substr(-2) + '</td>';
+                    _html += '<td class="' +cls+ '" id="'+id+'" data-dow="' + dow.substr(-2) + '">' + dow.substr(-2) + '</td>';
                 }
                 
             }

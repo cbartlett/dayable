@@ -56,7 +56,7 @@ class HabitsController < ApplicationController
 
     if @habit.user_id == current_user.id
       @habit.destroy
-      respond_with @habit
+      respond_with nil
     else
       respond_with @habit.errors, status: :unprocessable_entity
     end

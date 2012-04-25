@@ -5,7 +5,10 @@ class ChainsController < ApplicationController
 
   # GET /chains
   def index
-    if params[:day]
+    if params[:habit_id]
+      @chains = Chain.find_all_by_habit_id_and_user_id(params[:habit_id], current_user.id)
+      respond_with @chains
+    elsif params[:day]
       # try to parse the date
       day = Date.parse(params[:day])
       @chains = Chain.find_all_by_day_and_user_id(day, current_user.id, :include => [:habit])
@@ -37,7 +40,7 @@ class ChainsController < ApplicationController
     @chain = Chain.find(params[:id])
     @chain.destroy
 
-    respond_with @chain
+    respond_with nil
 
   end
 
