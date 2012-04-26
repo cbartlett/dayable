@@ -25,12 +25,17 @@ class ChainsController < ApplicationController
     @chain = Chain.new(params[:chain])
     @chain.user_id = current_user.id
 
-    if @chain.save
-      # TODO: Return the number of links in the chain in this message (select count(*) from chains where user_id = '1' and habit_id = '1')
-      # number of links = consecutive days this habit has been completed
-      respond_with({:chain => @chain, :habit => @chain.habit}, :status => :created, :location => @chain)
+    if @chain.day <= Date.today
+      if @chain.save
+        # TODO: Return the number of links in the chain in this message (select count(*) from chains where user_id = '1' and habit_id = '1')
+        # number of links = consecutive days this habit has been completed
+        #respond_with({:chain => @chain, :habit => @chain.habit}, :status => :created, :location => @chain)
+        respond_with(@chain, :status => :created, :location => @chain)
+      else
+        respond_with(@chain.errors, :status => :unprocessable_entity)
+      end
     else
-      respond_with(@chain.errors, :status => :unprocessable_entity)
+      respond_with({:error => 'Are you from the future?! You can\'t possibly have done anything on that day yet. Try again.'}, :status => 406, :location => nil)
     end
 
   end

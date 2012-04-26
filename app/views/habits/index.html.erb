@@ -35,32 +35,30 @@
 <% else %>
 
   
-  <p class="alert alert-info" style="display: none"></p>
-  <p class="alert alert-error" style="display: none"></p>
+  <p class="alert alert-info" style="display:none"></p>
+  <p class="alert alert-error" style="display:none"></p>
   
 
 <div class="row-fluid">
   <div class="span3">
     <div id="habit-list-container">
-    <h1>Soon To Be Habits</h1>
-    <ul id="habit-list">
-      <% @habits.each do |habit| %>
-        <li>
-          <div class="reverse-well">
-            <a href="javascript://" class="lead add-habit" data-id="<%= habit.id %>"><%= habit.content %></a>
-            <a href="javascript://" class="edit-habit" data-id="<%= habit.id %>"><i class="icon-pencil"></i></a>
-            <a href="javascript://" class="delete-habit" data-id="<%= habit.id %>"><i class="icon-trash"></i></a>
-          </div>
-        </li>
-      <% end %>
-</ul>
-</div>
-
-<input type="hidden" id="habit-id" />
-
-<br/>
-<a href="javascript://" id="new-habit" class="btn btn-large"><i class="icon-plus"></i> Start A Habit</a>
+      <h1>Soon To Be Habits</h1>
+      <ul id="habit-list">
+        <% @habits.each do |habit| %>
+          <li>
+            <div class="reverse-well">
+              <a href="javascript://" class="lead add-habit" data-id="<%= habit.id %>"><%= habit.content %></a>
+              <a href="javascript://" class="edit-habit" data-id="<%= habit.id %>"><i class="icon-pencil"></i></a>
+              <a href="javascript://" class="delete-habit" data-id="<%= habit.id %>"><i class="icon-trash"></i></a>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+    <input type="hidden" id="habit-id" />
+    <a href="javascript://" id="new-habit" class="btn btn-large"><i class="icon-plus"></i> Start A Habit</a>
   </div>
+
   <div class="span9">
     <h1 class="year"></h1>
         
@@ -75,9 +73,9 @@
       <tbody></tbody>
     </table>
     
-    <button id="last" class="btn btn-large">Last</button>
-    <button id="current" class="btn btn-large">Current</button>
-    <button id="next" class="btn btn-large">Next</button>
+    <button id="last" class="btn btn-large"><i class="icon-arrow-left"></i></button>
+    <button id="current" class="btn btn-large"><i class="icon-calendar"></i></button>
+    <button id="next" class="btn btn-large"><i class="icon-arrow-right"></i></button>
   </div>
 </div>
 

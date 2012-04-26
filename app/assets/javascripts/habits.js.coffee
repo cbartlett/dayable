@@ -32,6 +32,18 @@ $ ->
     <a href="javascript://" class="delete-habit" data-id="{{id}}"><i class="icon-trash"></i></a>
     </div>'
 
+  handleError = (data) ->
+    response = JSON.parse data.responseText
+    responseString = ""
+
+    for k,v of response
+      responseString += v + '\n'
+
+    if data.status == 406
+      $('.alert-info').html(responseString + '<a class="close">&times;</a>').fadeIn()
+    else
+      $('.alert-error').html(responseString + '<a class="close">&times;</a>').fadeIn()
+
   clearCalendarData = ->
     calendar_days = $('#calendar td')
 
@@ -80,8 +92,7 @@ $ ->
           'habit[content]' : $(this).val(),
         success: (data) =>
           $(this).parent().html habitTemplate { content: $(this).val(), id: $(this).data('id') }
-        error: (data) =>
-          console.log data
+        error: handleError(data)
 
   $('.delete-habit').live 'click', ->
     if confirm 'Are you sure you want to get rid of this habit?'
@@ -92,25 +103,30 @@ $ ->
           'habit[content]': $(this).val()
         success: (data) =>
           $(this).closest('li').remove()
-        #error: (data) =>
-          # handle error
+        error: handleError(data)
 
   $('.add-habit').live 'click',  ->
       current_id = $('#habit-id').val()
       if parseInt(current_id, 10) == parseInt($(this).data('id'), 10)
         $('#habit-id').val ''
-        $('.add-habit').css 'font-weight', '200'
+        #$('.add-habit').css 'font-weight', '200'
+        $('.add-habit').parent().css 'background-color', '#EFEFEF'
         clearCalendarData()
       else
         $('#habit-id').val $(this).data('id')
-        $('.add-habit').css 'font-weight', '200'
-        $(this).css 'font-weight', 'bold'
+        #$('.add-habit').css 'font-weight', '200'
+        $('.add-habit').parent().css 'background-color', '#EFEFEF'
+        #$(this).css 'font-weight', 'bold'
+        $(this).parent().css 'background-color', '#BBD8E9'
         fillInCalendarData $(this).data('id')
 
   $('#next, #last, #current').live 'click', ->
-    habitID = $('#habit_id').val()
+    habitID = $('#habit-id').val()
     if habitID
       fillInCalendarData habitID
+
+  $('.close').live 'click', ->
+    $(this).parent().fadeOut()
 
   $('#calendar td').live 'click', ->
     habitID = $('#habit-id').val()
@@ -122,16 +138,12 @@ $ ->
           'chain[user_id]': 0
           'chain[day]': day,
           (chain) =>
-            day_text = $(this).text()
-            $(this).text day_text + ' X'
-            $(this).attr('data-id', chain.id)
+            chainDate = day.toDateString().replace(/[ ]/gi, '-')
+            dayText = $('#' + chainDate).text()
+            $('#' + chainDate).text dayText + ' X'
+            $('#' + chainDate).attr('data-id', chain.id)
           ).error (data) ->
-            response = JSON.parse data.responseText
-            responseString = ""
-
-            for k,v of response
-              responseString += v + '\n'
-            $('p.alert-error').css('display', 'block').text(responseString)
+            handleError(data)
       else
         if $(this).attr('data-id')
           $.post('/chains/' + $(this).attr('data-id'), 
@@ -139,13 +151,8 @@ $ ->
             (chain) =>
               chainDate = day.toDateString().replace(/[ ]/gi, '-')
               $('#' + chainDate).text($('#' + chainDate).text().replace('X', ''))
-              $(this).data 'id', ''
+              $('#' + chainDate).attr('data-id', '')
             ).error (data) ->
-              response = JSON.parse data.responseText
-              responseString = ""
-
-              for k,v of response
-                responseString += v + '\n'
-              $('p.alert-error').css('display', 'block').text(responseString)
+              handleError(data)
             
 
