@@ -46,11 +46,9 @@
       <ul id="habit-list">
         <% @habits.each do |habit| %>
           <li>
-            <div class="reverse-well">
               <a href="javascript://" class="lead add-habit" data-id="<%= habit.id %>"><%= habit.content %></a>
               <a href="javascript://" class="edit-habit" data-id="<%= habit.id %>"><i class="icon-pencil"></i></a>
               <a href="javascript://" class="delete-habit" data-id="<%= habit.id %>"><i class="icon-trash"></i></a>
-            </div>
           </li>
         <% end %>
       </ul>

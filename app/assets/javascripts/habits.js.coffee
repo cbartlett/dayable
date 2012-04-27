@@ -45,11 +45,12 @@ $ ->
       $('.alert-error').html(responseString + '<a class="close">&times;</a>').fadeIn()
 
   clearCalendarData = ->
-    calendar_days = $('#calendar td')
+    $('.chain').remove()
+    #calendar_days = $('#calendar td')
 
-    for day in calendar_days
-      if($(day).text().indexOf('X') != -1)
-        $(day).text($(day).text().replace(' X', ''))
+    #for day in calendar_days
+      #if($(day).text().indexOf('X') != -1)
+        #$(day).remove('.chain')
 
   fillInCalendarData = (habitID) ->
     # clear the calendar first
@@ -61,8 +62,8 @@ $ ->
           chainDate = parsePgDate chain.day
           dow = $('#' + chainDate).text()
           $('#' + chainDate).attr('data-id', chain.id)
-          if $('#' + chainDate).text().indexOf('X') == -1
-            $('#' + chainDate).text(dow + ' X')
+          if $('#' + chainDate).has('.chain')
+            $('#' + chainDate).append('<span class="chain"> X</span>')
 
 
   $('#new-habit').click ->
@@ -79,6 +80,7 @@ $ ->
           $('#habit-list li:last').remove()
           $('#habit-list').append "<li>" + (habitTemplate data) + "</li>"
         )
+
   $('.edit-habit').live 'click', ->
     habitElement = $(this).parent().find('a:first')
     $(this).closest('li').html editHabitTemplate { content: habitElement.text(), id: habitElement.data('id') }
@@ -132,15 +134,14 @@ $ ->
     habitID = $('#habit-id').val()
     day = new Date($('h1.year').text(), m[$('h3.month').text()], $(this).data('dow'))
     if habitID
-      if $(this).text().indexOf('X') == -1
+      if $(this).children().length == 0
         $.post('/chains',
           'chain[habit_id]': habitID
           'chain[user_id]': 0
           'chain[day]': day,
           (chain) =>
             chainDate = day.toDateString().replace(/[ ]/gi, '-')
-            dayText = $('#' + chainDate).text()
-            $('#' + chainDate).text dayText + ' X'
+            $('#' + chainDate).append('<span class="chain"> X</span>')
             $('#' + chainDate).attr('data-id', chain.id)
           ).error (data) ->
             handleError(data)
@@ -150,7 +151,7 @@ $ ->
             { _method: 'delete' }, 
             (chain) =>
               chainDate = day.toDateString().replace(/[ ]/gi, '-')
-              $('#' + chainDate).text($('#' + chainDate).text().replace('X', ''))
+              $('#' + chainDate + ' .chain').remove()
               $('#' + chainDate).attr('data-id', '')
             ).error (data) ->
               handleError(data)

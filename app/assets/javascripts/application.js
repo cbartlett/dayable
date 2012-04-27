@@ -3,8 +3,7 @@
 //= require jquery_ujs
 //= require underscore
 //= require habits
-//= require bootstrap-tooltip
-//= require bootstrap-popover
+//= require twitter/bootstrap
 
 var ui = {
 
