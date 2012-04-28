@@ -1,10 +1,10 @@
 
-<div class="row-fluid">
+<div class="row">
   <div class="span12">
-  <div class=" hero-unit reverse-well">
+  <div class="well">
       <h2> Sign In </h2>
-      <p class="lead">Back for more eh?</p>
-      <%= simple_form_for(resource, :as => resource_name, :url => session_path(resource_name), :defaults => { :label => false }, :html => {:class => 'form-vertical' }) do |f| %>
+      <p></p>
+      <%= simple_form_for(resource, :as => resource_name, :url => session_path(resource_name), :defaults => { :label => false }) do |f| %>
         <%= devise_error_messages! %>
         <%= f.input :login, :placeholder => 'Username or Email' %>
         <%= f.input :password, :placeholder => 'Password' %>
