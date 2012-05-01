@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+after_create :send_welcome_email
+
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -18,6 +20,11 @@ class User < ActiveRecord::Base
    where(conditions).where(["lower(username) = :value OR lower(email) = :value", { :value => login.strip.downcase }]).first
  end
 
+private
+  
+  def send_welcome_email
+    UserMailer.welcome_email(self).deliver
+  end
 
 protected
 
