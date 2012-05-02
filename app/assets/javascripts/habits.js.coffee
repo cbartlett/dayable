@@ -26,13 +26,15 @@ $ ->
 
   newHabitTemplate = _.template '<li><input id="habit-content" name="habit[content]" type="text"></input></li>'
   editHabitTemplate = _.template '<input class="habit-edit-content" data-id="{{id}}" name="habit[content]" type="text" value="{{content}}"></input>'
-  habitTemplate = _.template '<div class="reverse-well">
-    <a href="javascript://" class="lead add-habit" data-id="{{id}}" rel="tooltip" data-original-title="Click this then click a date to add a habit.">{{content}}</a>
+  habitTemplate = _.template '
+    <a href="javascript://" class="lead add-habit" data-id="{{id}}">{{content}}</a>
     <a href="javascript://" class="edit-habit" data-id="{{id}}"><i class="icon-pencil"></i></a>
     <a href="javascript://" class="delete-habit" data-id="{{id}}"><i class="icon-trash"></i></a>
-    </div>'
+    '
 
   handleError = (data) ->
+    if not data
+      return
     response = JSON.parse data.responseText
     responseString = ""
 
@@ -83,24 +85,26 @@ $ ->
   $('.habit-edit-content').live 'keypress', (e) ->
     if e.keyCode == 13
       $.ajax
-        type: 'PUT',
-        url: '/habits/' + $(this).data('id') + '.json',
+        type: 'PUT'
+        url: '/habits/' + $(this).data('id') + '.json'
         data:
-          'habit[content]' : $(this).val(),
+          'habit[content]' : $(this).val()
         success: (data) =>
           $(this).parent().html habitTemplate { content: $(this).val(), id: $(this).data('id') }
-        error: handleError(data)
+        error: (data) -> 
+          handleError(data)
 
   $('.delete-habit').live 'click', ->
     if confirm 'Are you sure you want to get rid of this habit?'
       $.ajax
         type: 'DELETE'
-        url: '/habits/' + $(this).data('id')
+        url: '/habits/' + $(this).data('id') + '.json'
         data:
           'habit[content]': $(this).val()
         success: (data) =>
           $(this).closest('li').remove()
-        error: handleError(data)
+        error: (data) -> 
+          handleError(data)
 
   $('.add-habit').live 'click',  ->
       current_id = $('#habit-id').val()
