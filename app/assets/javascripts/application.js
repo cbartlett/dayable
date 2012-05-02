@@ -48,7 +48,7 @@ var ui = {
             ,"December"
         ];
         
-        var d = [
+        /*var d = [
              "Sunday"
             ,"Monday"
             ,"Tuesday"
@@ -56,6 +56,16 @@ var ui = {
             ,"Thursday"
             ,"Friday"
             ,"Saturday"
+        ];*/
+
+        var d = [
+             "S"
+            ,"M"
+            ,"T"
+            ,"W"
+            ,"Th"
+            ,"F"
+            ,"S"
         ];
         
         // Days in Month
@@ -177,7 +187,7 @@ var ui = {
                 }else if(msg.length > 0){
                     _html += '<td class="' +cls+ '" id="'+id+'" data-dow="' + dow.substr(-2) + '">' + dow.substr(-2) + '<br/><span class="content">'+msg+'</span></td>';
                 }else{
-                    _html += '<td class="' +cls+ '" id="'+id+'" data-dow="' + dow.substr(-2) + '">' + dow.substr(-2) + '</td>';
+                    _html += '<td class="' +cls+ '" id="'+id+'" data-dow="' + dow.substr(-2) + '">' + dow.substr(-2) + '<div class="cal-data">&nbsp;</div></td>';
                 }
                 
             }

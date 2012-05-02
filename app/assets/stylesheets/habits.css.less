@@ -6,34 +6,68 @@
     cursor: pointer;
 }
 
-/* Body and structure
--------------------------------------------------- */
+#new-habit {
+  margin-bottom: 30px;
+}
+
+.chain {
+    text-align: center;
+}
+
 .year{
-    font-size:108px;
-    margin-top:10px;
+    font-size:72px;
+    padding: 20px 0 5px 0;
 }
 
 .month{
     font-size:42px;
     color:red;
+    padding-top: 7px;
 }
 
 .calendar{
 }
 
+@media (max-width: 480px) {
+  .calendar TD{
+    height:20px;
+    font-size:24px;
+    color:#999;
+    padding: 5px;
+    border-top: 1px solid #ccc;
+    cursor: pointer;
+ }
+}
+
+
+@media (min-width: 768px) and (max-width: 979px) {
+  .calendar TD{
+  height:50px;
+  font-size:24px;
+  color:#999;
+  padding: 0 25px 25px 25px;
+  border-top: 1px solid #ccc;
+  cursor: pointer;
+}
+}
+
+@media (min-width: 1200px) { 
+  .calendar TD{
+  height:50px;
+  font-size:24px;
+  color:#999;
+  padding: 0 25px 25px 25px;
+  border-top: 1px solid #ccc;
+  cursor: pointer;
+}
+ }
+
 .calendar TH{
     font-size:14px;
     font-weight:bold;
     border-top:1px solid #ccc;
-    padding: 0 10px 0 10px;
-}
-
-.calendar TD{
-    height:50px;
-    font-size:24px;
-    color:#999;
-    padding: 0 10px 0 10px;
-    cursor: pointer;
+    border-bottom:1px solid #ccc;
+    padding: 10px;
 }
 
 .calendar TD:hover {

@@ -46,11 +46,6 @@ $ ->
 
   clearCalendarData = ->
     $('.chain').remove()
-    #calendar_days = $('#calendar td')
-
-    #for day in calendar_days
-      #if($(day).text().indexOf('X') != -1)
-        #$(day).remove('.chain')
 
   fillInCalendarData = (habitID) ->
     # clear the calendar first
@@ -62,8 +57,8 @@ $ ->
           chainDate = parsePgDate chain.day
           dow = $('#' + chainDate).text()
           $('#' + chainDate).attr('data-id', chain.id)
-          if $('#' + chainDate).has('.chain')
-            $('#' + chainDate).append('<span class="chain"> X</span>')
+          if $('#' + chainDate + ' .cal-data').has('.chain')
+            $('#' + chainDate + ' .cal-data').append('<span class="chain">&times;</span>')
 
 
   $('#new-habit').click ->
@@ -111,14 +106,11 @@ $ ->
       current_id = $('#habit-id').val()
       if parseInt(current_id, 10) == parseInt($(this).data('id'), 10)
         $('#habit-id').val ''
-        #$('.add-habit').css 'font-weight', '200'
         $('.add-habit').parent().css 'background-color', '#EFEFEF'
         clearCalendarData()
       else
         $('#habit-id').val $(this).data('id')
-        #$('.add-habit').css 'font-weight', '200'
         $('.add-habit').parent().css 'background-color', '#EFEFEF'
-        #$(this).css 'font-weight', 'bold'
         $(this).parent().css 'background-color', '#BBD8E9'
         fillInCalendarData $(this).data('id')
 
@@ -133,15 +125,15 @@ $ ->
   $('#calendar td').live 'click', ->
     habitID = $('#habit-id').val()
     day = new Date($('h1.year').text(), m[$('h3.month').text()], $(this).data('dow'))
+    chainDate = day.toDateString().replace(/[ ]/gi, '-')
     if habitID
-      if $(this).children().length == 0
+      if $('#' + chainDate + ' .cal-data').children().length == 0
         $.post('/chains',
           'chain[habit_id]': habitID
           'chain[user_id]': 0
           'chain[day]': day,
           (chain) =>
-            chainDate = day.toDateString().replace(/[ ]/gi, '-')
-            $('#' + chainDate).append('<span class="chain"> X</span>')
+            $('#' + chainDate + ' .cal-data').append('<span class="chain">&times;</span>')
             $('#' + chainDate).attr('data-id', chain.id)
           ).error (data) ->
             handleError(data)
@@ -155,5 +147,3 @@ $ ->
               $('#' + chainDate).attr('data-id', '')
             ).error (data) ->
               handleError(data)
-            
-
