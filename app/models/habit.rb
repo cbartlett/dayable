@@ -6,5 +6,5 @@ class Habit < ActiveRecord::Base
 
   validates :content, :presence => true
 
-  attr_accessible :content, :user_id
+  attr_accessible :content
 end

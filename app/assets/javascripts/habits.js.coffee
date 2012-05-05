@@ -46,6 +46,16 @@ $ ->
     else
       $('.alert-error').html(responseString + '<a class="close">&times;</a>').fadeIn()
 
+  delay = (ms, func) -> setTimeout func, ms
+
+  comboMessage = (linkCount) ->
+    if linkCount < 3
+      return
+
+    $('.alert-info').html('You\'ve completed this habit ' + linkCount + ' days in a row! Keep it up!' + '<a class="close">&times;</a>').fadeIn()
+
+    delay 5000, -> $('.alert-info').fadeOut()
+
   clearCalendarData = ->
     $('.chain').remove()
 
@@ -136,9 +146,10 @@ $ ->
           'chain[habit_id]': habitID
           'chain[user_id]': 0
           'chain[day]': day,
-          (chain) =>
+          (data) ->
+            comboMessage data.link_count
             $('#' + chainDate + ' .cal-data').append('<span class="chain">&times;</span>')
-            $('#' + chainDate).attr('data-id', chain.id)
+            $('#' + chainDate).attr('data-id', data.chain.id)
           ).error (data) ->
             handleError(data)
       else

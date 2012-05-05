@@ -14,15 +14,6 @@ class HabitsController < ApplicationController
     end
   end
 
-  def show
-    @habit = Habit.find(params[:id])
-    if @habit.user_id == current_user.id
-      respond_with @habit
-    else
-      respond_with nil
-    end
-  end
-
   # POST /habits
   # POST /habits.json
   def create

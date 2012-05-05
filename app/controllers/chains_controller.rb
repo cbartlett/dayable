@@ -8,29 +8,21 @@ class ChainsController < ApplicationController
     if params[:habit_id]
       @chains = Chain.find_all_by_habit_id_and_user_id(params[:habit_id], current_user.id)
       respond_with @chains
-    elsif params[:day]
-      # try to parse the date
-      day = Date.parse(params[:day])
-      @chains = Chain.find_all_by_day_and_user_id(day, current_user.id, :include => [:habit])
-      respond_with(@chains, :include => :habit)
-    else
-      @chains = Chain.find_all_by_user_id(current_user.id)
-      respond_with(@chains)
     end
-    
   end
 
   # POST /chains
   def create
+    # TODO make sure the habit exists and belongs to the user in question
     @chain = Chain.new(params[:chain])
     @chain.user_id = current_user.id
 
-    if @chain.day <= Date.today
+    if @chain and @chain.day <= Date.today
       if @chain.save
-        # TODO: Return the number of links in the chain in this message (select count(*) from chains where user_id = '1' and habit_id = '1')
-        # number of links = consecutive days this habit has been completed
-        #respond_with({:chain => @chain, :habit => @chain.habit}, :status => :created, :location => @chain)
-        respond_with(@chain, :status => :created, :location => @chain)
+        # check to see if there are any links around the current chain
+        link_count = get_link_backward(@chain.user_id, @chain.habit_id, @chain.day, 0)
+        link_count = link_count + get_link_forward(@chain.user_id, @chain.habit_id, @chain.day+1, 0)
+        respond_with({ :chain => @chain, :link_count => link_count}, :status => :created, :location => @chain)
       else
         respond_with(@chain.errors, :status => :unprocessable_entity)
       end
@@ -48,5 +40,25 @@ class ChainsController < ApplicationController
     respond_with nil
 
   end
+
+  private
+
+    def get_link_backward(user_id, habit_id, day, x)
+      chain = Chain.find_by_habit_id_and_user_id_and_day(habit_id, user_id, day)
+      if !chain
+        return x;
+      else
+        return get_link_backward(user_id, habit_id, day-1, x+1)
+      end
+    end
+
+    def get_link_forward(user_id, habit_id, day, x)
+      chain = Chain.find_by_habit_id_and_user_id_and_day(habit_id, user_id, day)
+      if !chain
+        return x;
+      else
+        return get_link_forward(user_id, habit_id, day+1, x+1)
+      end
+    end
 
 end
