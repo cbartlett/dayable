@@ -8,12 +8,13 @@ Dayable::Application.routes.draw do
         :sign_up => 'signup'
   }
   resources :users
+  resources :tokens, :only => [:create, :destroy]
 
   resources :habits
   resources :chains
   
   root :to => 'habits#index'
 
-  match 'about' => 'home#about'
+  get 'about' => 'home#about'
 
 end
