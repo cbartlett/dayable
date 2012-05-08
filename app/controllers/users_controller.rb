@@ -2,7 +2,10 @@ class UsersController < ApplicationController
 
   respond_to :json
 
+  before_filter :authenticate_user!, :except => [:create]
+
   def create
+    # user[username], user[email], user[password], user[password_confirmation]
     @user = User.new(params[:user])
 
     if @user.save

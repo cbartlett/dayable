@@ -2,7 +2,10 @@ class TokensController < ApplicationController
 
   respond_to :json
 
+  before_filter :authenticate_user!, :except => [:create]
+
   def create
+    # params: { login: "username or email", password: "password" }
     @user = User.find_record(params[:login])
 
     if @user and @user.valid_password?(params[:password])
