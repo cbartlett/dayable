@@ -9,7 +9,8 @@ class UsersController < ApplicationController
     @user = User.new(params[:user])
 
     if @user.save
-      respond_with(@user, :status => 200, :location => nil)
+      @user.reset_authentication_token!
+      respond_with({:auth_token => @user.authentication_token}, :status => 200, :location => nil)
     else
       respond_with({:error => "Could not create user"}, :status => :unprocessable_entity, :location => nil )
     end
