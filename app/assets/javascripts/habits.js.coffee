@@ -21,16 +21,16 @@ parsePgDate = (db_date) ->
 
 $ ->
 
+  # feature tour
+  if $('#sign_out').length == 0
+    $(this).featureTour()
+
   _.templateSettings = 
     interpolate : /\{\{(.+?)\}\}/g
 
-  newHabitTemplate = _.template '<li><input id="habit-content" name="habit[content]" type="text"></input></li>'
-  editHabitTemplate = _.template '<input class="habit-edit-content" data-id="{{id}}" name="habit[content]" type="text" value="{{content}}"></input>'
-  habitTemplate = _.template '
-    <a href="javascript://" class="lead add-habit" data-id="{{id}}">{{content}}</a>
-    <a href="javascript://" class="edit-habit" data-id="{{id}}"><i class="icon-pencil"></i></a>
-    <a href="javascript://" class="delete-habit" data-id="{{id}}"><i class="icon-trash"></i></a>
-    '
+  newHabitTemplate = _.template $('#newHabitTemplate').html()
+  editHabitTemplate = _.template $('#editHabitTemplate').html()
+  habitTemplate = _.template $('#habitTemplate').html()
 
   handleError = (data) ->
     if not data
@@ -76,17 +76,38 @@ $ ->
   $('#new-habit').click ->
     if $('#habit-content').length == 0
       # show textbox
+      if $('.tour-tip-next').data('touridx') == 1
+        $('.tour-tip-next').trigger('click')
       $('#habit-list').append newHabitTemplate
       $('#habit-list li:last #habit-content').focus()
 
   $('#habit-content').live 'keypress', (e) ->
     if e.keyCode == 13
+      $('.alert-info').html('Loading...').fadeIn()
       $.post('/habits',
         'habit[content]': $(this).val(),
         (data) =>
+          if $('.tour-tip-next').data('touridx') == 2
+            $('.tour-tip-next').trigger('click')
+          $('.alert-info').fadeOut('slow')
           $('#habit-list li:last').remove()
           $('#habit-list').append "<li>" + (habitTemplate data) + "</li>"
         )
+
+  $('.save-habit').live 'click', ->
+    $('.alert-info').html('Loading...').fadeIn()
+    $.post('/habits',
+      'habit[content]': $($(this).parent().children()[0]).val(),
+      (data) =>
+        if $('.tour-tip-next').data('touridx') == 2
+            $('.tour-tip-next').trigger('click')
+        $('.alert-info').fadeOut('slow')
+        $('#habit-list li:last').remove()
+        $('#habit-list').append "<li>" + (habitTemplate data) + "</li>"
+      )
+
+  $('.cancel-habit').live 'click', ->
+    $(this).closest('li').remove()
 
   $('.edit-habit').live 'click', ->
     habitElement = $(this).parent().find('a:first')
@@ -126,6 +147,8 @@ $ ->
         $('#habit-id').val $(this).data('id')
         $('.add-habit').parent().css 'background-color', '#EFEFEF'
         $(this).parent().css 'background-color', '#BBD8E9'
+        if $('.tour-tip-next').data('touridx') == 3
+            $('.tour-tip-next').trigger('click')
         fillInCalendarData $(this).data('id')
 
   $('#next, #last, #current').live 'click', ->
@@ -147,6 +170,8 @@ $ ->
           'chain[user_id]': 0
           'chain[day]': day,
           (data) ->
+            if $('.tour-tip-next').data('touridx') == 4
+              $('.tour-tip-next').trigger('click')
             comboMessage data.link_count
             $('#' + chainDate + ' .cal-data').append('<span class="chain">&times;</span>')
             $('#' + chainDate).attr('data-id', data.chain.id)

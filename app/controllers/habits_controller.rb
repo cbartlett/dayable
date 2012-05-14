@@ -1,6 +1,6 @@
 class HabitsController < ApplicationController
 
-  before_filter :authenticate_user!, :except => [:index]
+  before_filter :authenticate_user!, :except => [:index, :create]
 
   respond_to :json, :html
 
@@ -10,20 +10,25 @@ class HabitsController < ApplicationController
     if current_user
       @habits = Habit.find_all_by_user_id(current_user.id)
     else
-      respond_with nil
+      @habits = []
     end
   end
 
   # POST /habits
   # POST /habits.json
   def create
-    @habit = Habit.new(params[:habit])
-    @habit.user_id = current_user.id
 
-    if @habit.save
-      respond_with @habit, status: :created
+    if current_or_guest_user
+      @habit = Habit.new(params[:habit])
+      @habit.user_id = current_or_guest_user.id
+
+      if @habit.save
+        respond_with @habit, status: :created
+      else
+        respond_with @habit.errors, status: :unprocessable_entity
+      end
     else
-      respond_with @habit.errors, status: :unprocessable_entity
+      respond_with nil
     end
 
   end

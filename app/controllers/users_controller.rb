@@ -18,12 +18,12 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    @user = User.find(params[:id])
+    @user = User.find_by_authentication_token(params[:auth_token])
 
-    if @user and @user.valid_password?(params[:password])
+    if @user.destroy
       respond_with(:status => 200, :location => nil)
     else
-      respond_with({:error => "Incorrect password." }, :status => 401, :location => nil)
+      respond_with({:error => "Wrong auth token mang." }, :status => 401, :location => nil)
     end
   end
 

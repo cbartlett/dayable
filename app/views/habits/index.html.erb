@@ -1,53 +1,5 @@
-<% if !user_signed_in? %>
-
-<div class="hero-unit road-bg">
-<h1>Dayable</h1>
-<p class="lead">Keep track of your success every day!<br/>
-  Form habits! Be awesome!</p>
-<p><a href="/signup" class="btn btn-success btn-large">Sign up for free</a></p>
-</div>
-
-<div class="row">
-  <div class="span12">
-  <ul class="thumbnails">
-      <li class="span4">
-        <div class="thumbnail">
-          <a href="javascript://" class="thumbnail"><%= image_tag("screenshot1.png") %></a>
-          <div class="caption">
-            <h5>Step 1</h5>
-            <p class="lead">Make a list of the things you'd like to do every day.</p>
-          </div>
-        </div>
-      </li>
-      <li class="span4">
-        <div class="thumbnail">
-          <a href="javascript://" class="thumbnail"><%= image_tag("screenshot2.png") %></a>
-          <div class="caption">
-            <h5>Step 2</h5>
-            <p class="lead">Select an item in your list.</p>
-          </div>
-        </div>
-      </li>
-      <li class="span4">
-        <div class="thumbnail">
-          <a href="javascript://" class="thumbnail"><%= image_tag("screenshot3.png") %></a>
-          <div class="caption">
-            <h5>Step 3</h5>
-            <p class="lead">Click or tap a day in your calendar to start a chain.</p>
-          </div>
-        </div>
-        
-      </li>
-    </ul>
-  </div>
-</div>
-
-<% else %>
-
-  
-  <p class="alert alert-info" style="display:none"></p>
-  <p class="alert alert-error" style="display:none"></p>
-  
+<p class="alert alert-info" style="display:none"></p>
+<p class="alert alert-error" style="display:none"></p>
 
 <div class="row">
   <div class="span3">
@@ -64,7 +16,7 @@
       </ul>
     </div>
     <input type="hidden" id="habit-id" />
-    <a href="javascript://" id="new-habit" class="btn btn-large"><i class="icon-plus"></i> Start A Habit</a>    
+    <a href="javascript://" id="new-habit" class="btn btn-large btn-inverse">Start A Habit</a>    
   </div>
 
   <div class="span9">
@@ -86,4 +38,11 @@
   </div>
 </div>
 
-<% end %>
+<!-- Feature tour html -->
+<ol id="featureTourTipContent" style="display: none">
+  <li data-target="#new-habit" data-placement="bottom" data-title="Start It">Click this button to start a new habit.</li>
+  <li data-target="#habit-list" data-title="Type It">Type in the name of the habit you want to start then hit enter (or click save) when you're done.</li>
+  <li data-target="#habit-list-container" data-placement="right" data-title="Click It">Click the habit you just created.</li>
+  <li data-target="#calendar" data-placement="top" data-title="Place It">Now click a day on the calendar.<br/><b>Viola!</b> You've started a new habit.</li>
+  <li data-target="#sign_up" data-placement="bottom" data-title="Save Your Stuff">Sign up to create and save new habits.</li>
+</ol>

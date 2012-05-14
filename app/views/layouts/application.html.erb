@@ -38,11 +38,11 @@
           <a class="brand" href="/">Dayable</a>
           <div class="nav-collapse">
             <ul class="nav pull-right">
-              <li><a href="/about">About Me</a></li>
+              <li><a href="/about">About</a></li>
               <% if user_signed_in? %>
-                <li><%= link_to "Sign Out", destroy_user_session_path, :method => :delete %></li>
+                <li id="sign_out"><%= link_to "Sign Out", destroy_user_session_path, :method => :delete %></li>
               <% else %>
-                <li class="<%= 'active' if request.url.include? new_user_registration_path %>"><%= link_to "Sign Up", new_user_registration_path %></li>
+                <li id="sign_up" class="<%= 'active' if request.url.include? new_user_registration_path %>"><%= link_to "Sign Up", new_user_registration_path %></li>
                 <li class="<%= 'active' if request.url.include? new_user_session_path %>"><%= link_to "Sign In", new_user_session_path %></li>
             <% end %>
             </ul>
@@ -61,6 +61,25 @@
       </footer>
 
     </div> <!-- /container -->
+
+    <script type="text/template" id="newHabitTemplate">
+      <li>
+        <input id="habit-content" name="habit[content]" type="text" />
+        <a href="javascript://" class="save-habit btn btn-small">Save</a>
+        <a href="javascript://" class="cancel-habit btn btn-small btn-inverse">Cancel</a>
+      </li>
+    </script>
+
+    <script type="text/template" id="editHabitTemplate">
+      <input class="habit-edit-content" data-id="{{id}}" name="habit[content]" type="text" value="{{content}}" />
+    </script>
+
+    <script type="text/template" id="habitTemplate">
+      <a href="javascript://" class="lead add-habit" data-id="{{id}}">{{content}}</a>
+      <a href="javascript://" class="edit-habit" data-id="{{id}}"><i class="icon-pencil"></i></a>
+      <a href="javascript://" class="delete-habit" data-id="{{id}}"><i class="icon-trash"></i></a>
+    </script>
+
     <script type="text/javascript">
 
       var _gaq = _gaq || [];

@@ -1,12 +1,12 @@
 class ChainsController < ApplicationController
 
-  before_filter :authenticate_user!
+  before_filter :authenticate_user!, :except => [:index, :create]
   respond_to :json
 
   # GET /chains
   def index
     if params[:habit_id]
-      @chains = Chain.find_all_by_habit_id_and_user_id(params[:habit_id], current_user.id)
+      @chains = Chain.find_all_by_habit_id_and_user_id(params[:habit_id], current_or_guest_user.id)
       respond_with @chains
     end
   end
@@ -15,7 +15,7 @@ class ChainsController < ApplicationController
   def create
     # TODO make sure the habit exists and belongs to the user in question
     @chain = Chain.new(params[:chain])
-    @chain.user_id = current_user.id
+    @chain.user_id = current_or_guest_user.id
 
     if @chain and @chain.day <= Date.today
       if @chain.save

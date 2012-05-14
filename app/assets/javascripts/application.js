@@ -3,7 +3,9 @@
 //= require jquery_ujs
 //= require underscore
 //= require habits
-//= require twitter/bootstrap
+//= require twitter/bootstrap/tooltip
+//= require twitter/bootstrap/popover
+//= require bootstrap-tour
 
 var ui = {
 
@@ -47,16 +49,6 @@ var ui = {
             ,"November"
             ,"December"
         ];
-        
-        /*var d = [
-             "Sunday"
-            ,"Monday"
-            ,"Tuesday"
-            ,"Wednesday"
-            ,"Thursday"
-            ,"Friday"
-            ,"Saturday"
-        ];*/
 
         var d = [
              "S"
@@ -83,17 +75,6 @@ var ui = {
             ,30
             ,31
         ];
-        
-        // Events
-        /*var evnt = {"event" : [
-             {"date":"12/25","title":"Christmas"}
-            ,{"date":"1/01","title":"New Year's Day"}
-            ,{"date":"11/22","title":"Thanksgiving"}
-            ,{"date":"9/03","title":"Labor Day"}
-            ,{"date":"7/04","title":"Independence Day"}
-            ,{"date":"5/28","title":"Memorial Day"}
-            ,{"date":"2/28","title":"President's Day"}
-        ]};*/
     
         // Leap year
         if(now.getYear()%4 == 0){
@@ -150,17 +131,7 @@ var ui = {
                 // Get last day of month
                 if(dow==n[mon.getDate()]){
                     last = n[mon.getDate()];
-                }
-                
-                
-                // Check Event schedule
-                /*$.each(evnt.event,function(){   
-                    if(this.date == mon.getMonth()+1 + "/" + dow.substr(-2)){
-                        cls = "holiday";
-                        msg = this.title;
-                    }
-                });*/
-                
+                }        
                 
                 // Set class
                 if(cls.length == 0){
