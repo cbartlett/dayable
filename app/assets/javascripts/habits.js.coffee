@@ -24,6 +24,8 @@ $ ->
   # feature tour
   if $('#sign_out').length == 0
     $(this).featureTour()
+  else
+    $('#welcome').hide();
 
   _.templateSettings = 
     interpolate : /\{\{(.+?)\}\}/g
