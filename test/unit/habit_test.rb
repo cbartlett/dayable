@@ -1,7 +1,8 @@
 require 'test_helper'
 
 class HabitTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  test "invalid without content" do
+    h = Habit.new
+    assert !h.valid?, 'Habit was not valid'
+  end
 end

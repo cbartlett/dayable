@@ -1,11 +1,9 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
-
 one:
-  content: MyString
-  color: 
-  user_id: 
+  id: 1
+  content: Worked out
+  user_id: 1
 
 two:
-  content: MyString
-  color: 
-  user_id: 
+  id: 2
+  content: Meditated
+  user_id: 1

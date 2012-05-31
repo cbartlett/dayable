@@ -2,6 +2,9 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
+  three_in_a_row: "Congrats! Three in a row!"
+  five_in_a_row: "Snap! Five in a row!"
+  seven_in_a_row: "OMG. Seven in a row! It's your lucky day!"
   hello: "Hello world"
   activerecord:
     errors:
