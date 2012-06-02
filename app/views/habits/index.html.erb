@@ -1,12 +1,16 @@
-<p class="alert alert-info" style="display:none"></p>
-<p class="alert alert-error" style="display:none"></p>
-
-<div id="welcome" class="hero-unit">
-  <h1>Dayable!</h1> 
+<div id="welcome" class="hero-unit hidden-phone">
+  <h1>Dayable</h1> 
   <p class="lead">(day-uh-bull)<br/>Welcome to dayable, a magical place where good habits start and stay with you.</p>
 </div>
 
-<div class="row">
+<div class="row" id="message-container">
+  <div class="span12">
+    <p class="alert alert-info" style="display:none; position: absolute; width: 90%"></p>
+    <p class="alert alert-error" style="display:none; position: absolute; width: 90%"></p>
+  </div>
+</div>
+
+<div class="row hidden-phone">
   <div class="span3">
     <div id="habit-list-container">
       <h1>Soon To Be Habits</h1>
@@ -24,11 +28,11 @@
     <a href="javascript://" id="new-habit" class="btn btn-large btn-inverse">Start A Habit</a>    
   </div>
 
-  <div class="span9">
+  <div class="span6">
     <h3 class="month"></h3>
     <h1 class="year"></h1>
 
-    <br/>
+    <br />
   
     <table id="calendar" class="calendar">
       <thead></thead>
@@ -41,13 +45,18 @@
     <button id="current" class="btn btn-large"><i class="icon-calendar"></i></button>
     <button id="next" class="btn btn-large"><i class="icon-arrow-right"></i></button>
   </div>
+
+  <div class="span3">
+    <h1 style="margin-left: auto; margin-right: auto; width: 120px">Streak</h1>
+    <input type="text" id="streak" value="0"  class="dial" data-skin="default" data-readOnly="true" data-width="250" data-max="21" />
+  </div>
 </div>
 
-<!-- Feature tour html -->
-<ol id="featureTourTipContent" style="display: none">
+<!-- Desktop Feature tour html -->
+<ol id="featureTourTipContent" class="hidden-phone" style="display: none">
   <li data-target="#new-habit" data-placement="right" data-title="Start It">Click this button to start a new habit.</li>
   <li data-target="#habit-list" data-title="Type It">Type in the name of the habit you want to start then hit enter (or click save) when you're done.</li>
   <li data-target="#habit-list-container" data-placement="right" data-title="Click It">Click the habit you just created.</li>
-  <li data-target="#calendar" data-placement="top" data-title="Place It">Now click a day on the calendar.<br/><b>Viola!</b> You've started a new habit.</li>
+  <li data-target="#calendar" data-placement="top" data-title="Place It">Now click a day on the calendar.<br/><b>Voilà!</b> You've started a new habit.</li>
   <li data-target="#sign_up" data-placement="bottom" data-title="Save Your Stuff">Sign up to create and save new habits.</li>
 </ol>

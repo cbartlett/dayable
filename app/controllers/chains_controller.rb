@@ -1,6 +1,6 @@
 class ChainsController < ApplicationController
 
-  before_filter :authenticate_user!, :except => [:index, :create]
+  before_filter :authenticate_user!, :except => [:create, :destroy]
   respond_to :json
 
   # GET /chains
@@ -17,17 +17,22 @@ class ChainsController < ApplicationController
     @chain = Chain.new(params[:chain])
     @chain.user_id = current_or_guest_user.id
 
+    habit = Habit.find(@chain.habit_id)
+
     if @chain and @chain.day <= Date.today
       if @chain.save
         # check to see if there are any links around the current chain
-        link_count = get_link_backward(@chain.user_id, @chain.habit_id, @chain.day, 0)
-        link_count = link_count + get_link_forward(@chain.user_id, @chain.habit_id, @chain.day+1, 0)
-        respond_with({ :chain => @chain, :link_count => link_count}, :status => :created, :location => @chain)
+        link_count = habit.get_link_count_starting_with_chain(@chain)
+
+        # generate the appropriate link message
+        link_message = get_link_message(link_count)
+
+        respond_with({ :chain => @chain, :link_count => link_count, :link_message => link_message}, :status => :created, :location => @chain)
       else
         respond_with(@chain.errors, :status => :unprocessable_entity)
       end
     else
-      respond_with({:error => 'Are you from the future?! You can\'t possibly have done anything on that day yet. Try again.'}, :status => 406, :location => nil)
+      respond_with({:error => t(:future_error)}, :status => 406, :location => nil)
     end
 
   end
@@ -43,22 +48,19 @@ class ChainsController < ApplicationController
 
   private
 
-    def get_link_backward(user_id, habit_id, day, x)
-      chain = Chain.find_by_habit_id_and_user_id_and_day(habit_id, user_id, day)
-      if !chain
-        return x;
-      else
-        return get_link_backward(user_id, habit_id, day-1, x+1)
+    def get_link_message(link_count)
+      link_message = ""
+      case link_count
+        when 3
+          link_message = t(:three_in_a_row)
+        when 7
+          link_message = t(:seven_in_a_row)
+        when 14
+          link_message = t(:fourteen_in_a_row)
+        when 21
+          link_message = t(:twenty_one_in_a_row)
       end
-    end
-
-    def get_link_forward(user_id, habit_id, day, x)
-      chain = Chain.find_by_habit_id_and_user_id_and_day(habit_id, user_id, day)
-      if !chain
-        return x;
-      else
-        return get_link_forward(user_id, habit_id, day+1, x+1)
-      end
+      return link_message
     end
 
 end

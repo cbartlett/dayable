@@ -2,10 +2,12 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  three_in_a_row: "Congrats! Three in a row!"
-  five_in_a_row: "Snap! Five in a row!"
-  seven_in_a_row: "OMG. Seven in a row! It's your lucky day!"
-  hello: "Hello world"
+  hello_world: "Hello world"
+  three_in_a_row: "You've completed this habit 3 days in a row! Good job!"
+  seven_in_a_row: "You've done this same exact thing 7 days in a row! Keep it up!"
+  fourteen_in_a_row: "You're on fire! Nothing can stop you now!"
+  twenty_one_in_a_row: "You've reached the top of habit peak. Look out and survey your domain."
+  future_error: "Are you from the future?! You can't possibly have done anything on that day yet. Try again."
   activerecord:
     errors:
       messages:

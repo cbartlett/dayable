@@ -1,5 +1,5 @@
 class UserMailer < ActionMailer::Base
-  default from: "support@dayable.com"
+  default from: "emailmonkey@dayable.com"
 
   def welcome_email(user)
     @user = user

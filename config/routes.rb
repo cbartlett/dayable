@@ -10,7 +10,9 @@ Dayable::Application.routes.draw do
   resources :users
   resources :tokens, :only => [:create, :destroy]
 
-  resources :habits
+  resources :habits do
+    get 'streak', :on => :member
+  end
   resources :chains
   
   root :to => 'habits#index'

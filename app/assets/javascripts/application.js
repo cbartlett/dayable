@@ -2,9 +2,9 @@
 //= require jquery
 //= require jquery_ujs
 //= require underscore
+//= require jquery.knob
 //= require habits
-//= require twitter/bootstrap/tooltip
-//= require twitter/bootstrap/popover
+//= require twitter/bootstrap
 //= require bootstrap-tour
 
 var ui = {

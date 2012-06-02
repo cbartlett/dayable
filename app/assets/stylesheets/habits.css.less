@@ -25,42 +25,48 @@
     padding-top: 7px;
 }
 
+input#streak {
+  height: 75px;
+  cursor: auto;
+  box-shadow: none;
+}
+
+#message-container {
+  position: relative;
+  height: 40px;
+}
+
 .calendar{
 }
 
-@media (max-width: 480px) {
-  .calendar TD{
-    height:20px;
+/* Landscape phones and down */
+@media (max-width: 480px) { 
+  
+}
+
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px) {
+
+}
+
+/* Portrait tablet to landscape and desktop */
+@media (min-width: 768px) and (max-width: 979px) {
+
+}
+
+/* Large desktop */
+@media (min-width: 1200px) {
+  
+}
+
+.calendar TD{
+    height:50px;
     font-size:24px;
     color:#999;
-    padding: 5px;
+    padding: 0 25px 25px 25px;
     border-top: 1px solid #ccc;
     cursor: pointer;
- }
-}
-
-
-@media (min-width: 768px) and (max-width: 979px) {
-  .calendar TD{
-  height:50px;
-  font-size:24px;
-  color:#999;
-  padding: 0 25px 25px 25px;
-  border-top: 1px solid #ccc;
-  cursor: pointer;
-}
-}
-
-@media (min-width: 1200px) { 
-  .calendar TD{
-  height:50px;
-  font-size:24px;
-  color:#999;
-  padding: 0 25px 25px 25px;
-  border-top: 1px solid #ccc;
-  cursor: pointer;
-}
- }
+  }
 
 .calendar TH{
     font-size:14px;

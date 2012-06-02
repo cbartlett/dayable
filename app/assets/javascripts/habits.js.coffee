@@ -21,11 +21,22 @@ parsePgDate = (db_date) ->
 
 $ ->
 
+  $(window).resize ->
+    # feature tour
+    if $(window).width() <= 750
+      $('.popover').hide()
+    else
+      $('.popover').show()
+
+
   # feature tour
-  if $('#sign_out').length == 0
+  if $('#sign_out').length == 0 and $(window).width() > 750
     $(this).featureTour()
-  else
+  
+  if $('#sign_out').length != 0
     $('#welcome').hide();
+
+  $("#streak").knob();
 
   _.templateSettings = 
     interpolate : /\{\{(.+?)\}\}/g
@@ -50,13 +61,19 @@ $ ->
 
   delay = (ms, func) -> setTimeout func, ms
 
-  comboMessage = (linkCount) ->
-    if linkCount < 3
+  comboMessage = (linkCount, linkMessage) ->
+    # update the streak counter
+    updateStreak linkCount
+
+    if linkCount < 3 or linkMessage.length == 0
       return
 
-    $('.alert-info').html('You\'ve completed this habit ' + linkCount + ' days in a row! Keep it up!' + '<a class="close">&times;</a>').fadeIn()
+    $('.alert-info').html(linkMessage + '<a class="close">&times;</a>').fadeIn()
 
     delay 5000, -> $('.alert-info').fadeOut()
+
+  updateStreak = (linkCount) ->
+    $('#streak').val(linkCount).trigger('change')
 
   clearCalendarData = ->
     $('.chain').remove()
@@ -73,6 +90,11 @@ $ ->
           $('#' + chainDate).attr('data-id', chain.id)
           if $('#' + chainDate + ' .cal-data').has('.chain')
             $('#' + chainDate + ' .cal-data').append('<span class="chain">&times;</span>')
+
+    $.get '/habits/' + habitID + '/streak',
+      (data) ->
+        updateStreak data.link_count
+
 
 
   $('#new-habit').click ->
@@ -174,7 +196,7 @@ $ ->
           (data) ->
             if $('.tour-tip-next').data('touridx') == 4
               $('.tour-tip-next').trigger('click')
-            comboMessage data.link_count
+            comboMessage data.link_count, data.link_message
             $('#' + chainDate + ' .cal-data').append('<span class="chain">&times;</span>')
             $('#' + chainDate).attr('data-id', data.chain.id)
           ).error (data) ->
@@ -187,5 +209,8 @@ $ ->
               chainDate = day.toDateString().replace(/[ ]/gi, '-')
               $('#' + chainDate + ' .chain').remove()
               $('#' + chainDate).attr('data-id', '')
+              $.get '/habits/' + habitID + '/streak',
+                (data) ->
+                  updateStreak data.link_count
             ).error (data) ->
               handleError(data)

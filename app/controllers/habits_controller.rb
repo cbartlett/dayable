@@ -1,6 +1,6 @@
 class HabitsController < ApplicationController
 
-  before_filter :authenticate_user!, :except => [:index, :create]
+  before_filter :authenticate_user!, :except => [:index, :create, :streak]
 
   respond_to :json, :html
 
@@ -56,5 +56,18 @@ class HabitsController < ApplicationController
     else
       respond_with @habit.errors, status: :unprocessable_entity
     end
+  end
+
+  # GET /habits/:id/streak
+  def streak
+    @habit = Habit.find(params[:id])
+
+    if @habit.user_id == current_or_guest_user.id
+      link_count = @habit.get_highest_link_count_by_current_month
+      respond_with({ :link_count => link_count }, :status => 200, :location => @habit)
+    else
+      respond_with @habit.errors, status: :unprocessable_entity
+    end
+
   end
 end
