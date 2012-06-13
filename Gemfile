@@ -6,6 +6,7 @@ gem 'devise'
 gem 'simple_form'
 gem 'jquery-rails'
 gem 'thin'
+gem 'foreman'
 
 group :development, :test do
   gem 'rspec-rails'
