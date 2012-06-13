@@ -1,9 +1,0 @@
-one:
-  id: 1
-  content: Worked out
-  user_id: 1
-
-two:
-  id: 2
-  content: Meditated
-  user_id: 1
