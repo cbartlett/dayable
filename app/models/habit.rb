@@ -23,7 +23,7 @@ class Habit < ActiveRecord::Base
 
   def get_highest_link_count_by_current_month
     highest_link_count = 0
-    start_date = Time.now.beginning_of_month
+    start_date = Time.now.beginning_of_month + (3600*24)
     end_date = Time.now.end_of_month
     self.chains.where("day >= :start_date AND day < :end_date", { :start_date => start_date, :end_date => end_date }).each do |c|
       link_count = get_link_count_backward(c.user_id, c.habit_id, c.day, 0)
@@ -41,6 +41,22 @@ class Habit < ActiveRecord::Base
     link_count = link_count + get_link_count_forward(chain.user_id, chain.habit_id, chain.day+1, 0)
     return link_count
   end
+
+  def get_link_message
+      link_count = self.get_highest_link_count_by_current_month
+      link_message = ""
+      case link_count
+        when 3
+          link_message = t(:three_in_a_row)
+        when 7
+          link_message = t(:seven_in_a_row)
+        when 14
+          link_message = t(:fourteen_in_a_row)
+        when 21
+          link_message = t(:twenty_one_in_a_row)
+      end
+      return link_message
+    end
 
   private
 

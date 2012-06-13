@@ -5,6 +5,11 @@ gem 'pg'
 gem 'devise'
 gem 'simple_form'
 gem 'jquery-rails'
+gem 'thin'
+
+group :development, :test do
+  gem 'rspec-rails'
+end
 
 group :assets do
   gem 'therubyracer'
@@ -15,7 +20,7 @@ end
 
 group :test do
   gem 'capybara'
+  gem 'mocha'
   gem 'shoulda'
-  gem 'factory_girl'
-  gem 'rspec'
+  gem 'factory_girl_rails'
 end

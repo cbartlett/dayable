@@ -25,7 +25,7 @@ class ChainsController < ApplicationController
         link_count = habit.get_link_count_starting_with_chain(@chain)
 
         # generate the appropriate link message
-        link_message = get_link_message(link_count)
+        link_message = habit.get_link_message
 
         respond_with({ :chain => @chain, :link_count => link_count, :link_message => link_message}, :status => :created, :location => @chain)
       else
@@ -47,20 +47,5 @@ class ChainsController < ApplicationController
   end
 
   private
-
-    def get_link_message(link_count)
-      link_message = ""
-      case link_count
-        when 3
-          link_message = t(:three_in_a_row)
-        when 7
-          link_message = t(:seven_in_a_row)
-        when 14
-          link_message = t(:fourteen_in_a_row)
-        when 21
-          link_message = t(:twenty_one_in_a_row)
-      end
-      return link_message
-    end
 
 end
